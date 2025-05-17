@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Pokedex API</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-6 offset-md-3">
+            <h2>Orden de uso de la API</h2>
+            <ol class="mb-4">
+                <li>Crear <strong>Entrenador</strong></li>
+                <li>Crear <strong>Habilidad</strong></li>
+                <li>Crear <strong>Pokémon</strong> asignándolo a un entrenador y habilidad</li>
+                <li>Consultar recursos (Entrenador, Habilidad, Pokémon)</li>
+            </ol>
+
+            <h2>Endpoints y ejemplos de payload</h2>
+
+            <h3>Entrenadores</h3>
+            <ul class="list-group mb-4">
+                <li class="list-group-item">
+                    <code>GET  /api/v1/entrenadores</code> – Obtener todos los entrenadores
+                </li>
+                <li class="list-group-item">
+                    <code>GET  /api/v1/entrenadores/{id}</code> – Obtener entrenador por ID
+                </li>
+                <li class="list-group-item">
+                    <code>GET  /api/v1/entrenadores/{id}/pokemons</code> – Obtener todos los Pokémon de un entrenador
+                </li>
+                <li class="list-group-item">
+                    <code>POST /api/v1/entrenadores</code> – Crear nuevo entrenador<br>
+                    <strong>Payload:</strong>
+                    <pre class="mt-2 mb-2">
+{
+  "nombre": "Ash Ketchum"
+}
+</pre>
+                </li>
+                <li class="list-group-item">
+                    <code>PUT  /api/v1/entrenadores/{id}</code> – Actualizar entrenador<br>
+                    <strong>Payload:</strong>
+                    <pre class="mt-2 mb-2">
+{
+  "nombre": "Ash Ketchum"
+}
+</pre>
+                </li>
+                <li class="list-group-item">
+                    <code>DELETE /api/v1/entrenadores/{id}</code> – Eliminar entrenador
+                </li>
+            </ul>
+
+            <h3>Habilidades</h3>
+            <ul class="list-group mb-4">
+                <li class="list-group-item">
+                    <code>GET    /api/v1/habilidades</code> – Obtener todas las habilidades
+                </li>
+                <li class="list-group-item">
+                    <code>GET    /api/v1/habilidades/{id}</code> – Obtener habilidad por ID
+                </li>
+                <li class="list-group-item">
+                    <code>GET    /api/v1/habilidades/{id}/pokemons</code> – Obtener todos los Pokémon asociados a una habilidad
+                </li>
+                <li class="list-group-item">
+                    <code>POST   /api/v1/habilidades</code> – Crear nueva habilidad<br>
+                    <strong>Payload:</strong>
+                    <pre class="mt-2 mb-2">
+{
+  "nombre": "impactrueno"
+}
+</pre>
+                </li>
+                <li class="list-group-item">
+                    <code>PUT    /api/v1/habilidades/{id}</code> – Actualizar habilidad<br>
+                    <strong>Payload:</strong>
+                    <pre class="mt-2 mb-2">
+{
+  "nombre": "impactrueno mejorado"
+}
+</pre>
+                </li>
+                <li class="list-group-item">
+                    <code>DELETE /api/v1/habilidades/{id}</code> – Eliminar habilidad
+                </li>
+            </ul>
+
+            <h3>Pokémon</h3>
+            <ul class="list-group mb-4">
+                <li class="list-group-item">
+                    <code>GET    /api/v1/pokemons</code> – Obtener todos los Pokémon
+                </li>
+                <li class="list-group-item">
+                    <code>GET    /api/v1/pokemons/{id}</code> – Obtener Pokémon por ID
+                </li>
+                <li class="list-group-item">
+                    <code>POST   /api/v1/pokemons</code> – Crear nuevo Pokémon<br>
+                    <strong>Payload:</strong>
+                    <pre class="mt-2 mb-2">
+{
+  "nombre": "Pikachu",
+  "tipo": "eléctrico",
+  "nivel": 5,
+  "salud": 35,
+  "entrenador": { "id": 1 },
+  "habilidades": [
+    { "id": 1 },
+    { "id": 2 }
+  ]
+}
+</pre>
+                </li>
+                <li class="list-group-item">
+                    <code>PUT    /api/v1/pokemons/{id}</code> – Reemplazar Pokémon<br>
+                    <strong>Payload:</strong>
+                    <pre class="mt-2 mb-2">
+{
+  "nombre": "Pikachu",
+  "tipo": "eléctrico",
+  "nivel": 6,
+  "salud": 40,
+  "entrenador": { "id": 2 },
+  "habilidades": [
+    { "id": 3 },
+    { "id": 4 }
+  ]
+}
+</pre>
+                </li>
+                <li class="list-group-item">
+                    <code>DELETE /api/v1/pokemons/{id}</code> – Eliminar Pokémon
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+</body>
+</html>
