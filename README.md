@@ -33,6 +33,12 @@ Se muestran ejemplos de CRUD completo, relaciones Many-to-One, One-to-Many y Man
 
 ---
 
+## 📊 Diagrama de la Base de Datos
+
+![Diagrama ER de PokedexDB](https://raw.githubusercontent.com/cifp-villa-aguimes/pokedex/refs/tags/v1/src/main/resources/static/diagram.png)
+
+---
+
 ## ⚙️ Requisitos Previos
 
 - Java 17 o superior
