@@ -1,0 +1,228 @@
+<!-- ========================================================= -->
+<!--  RECURSO · RELACIONES JPA EN POKEDEX APP (Página Moodle)  -->
+<!--  Copia todo este bloque en el editor HTML del recurso     -->
+<!-- ========================================================= -->
+
+<div style="font-family:'Segoe UI',Arial,sans-serif; line-height:1.55; color:#333; max-width:960px; margin:auto;">
+
+  <!-- CABECERA PRINCIPAL -->
+  <h2 style="background:#0055a4; color:#fff; padding:14px 22px; border-radius:6px; margin:0 0 26px 0; font-size:24px;">
+    Relaciones JPA en Pokedex App
+  </h2>
+
+  <!-- INTRODUCCIÓN -->
+  <p style="font-size:15.5px;">
+    En este recurso junto&nbsp;<em>API Spring Boot - Pokedex Básico v1</em> vamos a ver cómo
+    modelar en JPA las relaciones entre <strong>Pokémon</strong>,
+    <strong>Entrenadores</strong> y <strong>Habilidades</strong>.
+  </p>
+
+  <!-- DIAGRAMA ER -->
+  <section style="margin-top:36px; text-align:center;">
+    <h3 style="color:#0055a4; margin-bottom:6px;">Diagrama ER de la Base de Datos</h3>
+    <p style="margin-top:0;">Este esquema muestra las tablas y relaciones que hemos modelado con JPA:</p>
+    <img src="https://raw.githubusercontent.com/cifp-villa-aguimes/pokedex/refs/tags/v1/src/main/resources/static/diagram.png"
+         alt="Diagrama ER de la Base de Datos"
+         style="max-width:100%; height:auto; border:1px solid #ccc; border-radius:4px;">
+  </section>
+
+  <!-- VÍDEO EXPLICATIVO -->
+  <section style="margin-top:40px; text-align:center;">
+    <h3 style="color:#0055a4; margin-bottom:6px;">Vídeo Explicativo</h3>
+    <p style="margin-top:0;">A continuación, un breve vídeo que repasa cómo funcionan las relaciones JPA:</p>
+    <div style="position:relative; padding-bottom:56.25%; height:0; overflow:hidden; max-width:100%; border-radius:4px; border:1px solid #ccc;">
+      <iframe src="https://www.youtube.com/embed/bVcrpN4mDtg"
+              title="Explicación Relaciones JPA"
+              style="position:absolute; top:0; left:0; width:100%; height:100%; border:0;"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowfullscreen></iframe>
+    </div>
+  </section>
+
+  <!-- MANY-TO-ONE -->
+  <section style="margin-top:46px;">
+    <h3 style="color:#0055a4;">1. Many-to-One (Pokémon → Entrenador)</h3>
+
+    <p>
+      Un <em>Entrenador</em> puede tener muchos <em>Pokémon</em>, pero cada Pokémon pertenece a un único
+      Entrenador. En la base de datos, la tabla <code>pokemons</code> tendrá una columna
+      <code>entrenador_id</code> como clave foránea.
+    </p>
+
+    <p><strong>Análisis de anotaciones:</strong></p>
+    <ul style="margin-left:20px;">
+      <li><code>@Entity</code>: marca la clase como entidad gestionada por JPA.</li>
+      <li><code>@Table(name="pokemons")</code>: asigna la entidad a la tabla <code>pokemons</code> en la base de datos.</li>
+      <li><code>@Id</code> y <code>@GeneratedValue</code>: definen la clave primaria <code>id</code> y cómo se genera automáticamente.</li>
+      <li><code>@ManyToOne(fetch = FetchType.EAGER)</code>: indica que muchos <em>Pokémon</em> pueden apuntar a un solo <em>Entrenador</em>, y que al cargar un Pokémon, su entrenador asociado se cargue inmediatamente.</li>
+      <li><code>@JoinColumn(name="entrenador_id")</code>: especifica el nombre de la columna de clave foránea en la tabla <code>pokemons</code> que enlaza con la tabla de entrenadores.</li>
+    </ul>
+
+    <p><strong>Opciones de carga (fetch):</strong></p>
+    <ul style="margin-left:20px;">
+      <li><code>fetch = FetchType.EAGER</code>: carga inmediata de la asociación; al leer un Pokémon, su <em>Entrenador</em> se obtiene en la misma consulta. Es <strong>el valor por defecto</strong> en <code>@ManyToOne</code>, por lo que no es necesario especificarlo explícitamente.</li>
+      <li><code>fetch = FetchType.LAZY</code>: carga diferida; el <em>Entrenador</em> se carga solo cuando se invoca <code>getEntrenador()</code>. Es el valor por defecto en <code>@OneToMany</code> y <code>@ManyToMany</code>.</li>
+    </ul>
+
+<pre style="background:#f7f7f7; padding:0.9em 1.1em; border:1px solid #ddd; overflow-x:auto; border-radius:4px;">
+<code style="color:#c7254e;">
+@Entity
+@Table(name="pokemons")
+public class <strong>Pokemon</strong> {
+    @Id @GeneratedValue
+    private Long id;
+
+    // ... otros campos ...
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name="entrenador_id")
+    private Entrenador entrenador;
+
+    // getters y setters...
+}
+</code>
+</pre>
+
+    <p style="margin-top:12px;">En el controlador, al hacer <code>POST /api/v1/pokemons</code>, enviamos:</p>
+
+<pre style="background:#f7f7f7; padding:0.9em 1.1em; border:1px solid #ddd; overflow-x:auto; border-radius:4px;">
+<code>{
+  "nombre": "Pikachu",
+  "tipo": "eléctrico",
+  "nivel": 6,
+  "salud": 40,
+  "entrenador": { "id": 1 }
+}
+</code>
+</pre>
+
+    <p style="margin-top:12px;"><strong>Nota:</strong> Los campos <code>entrenador</code> y <code>habilidades</code> son opcionales. Si los incluyes, puedes enviarlos así:</p>
+
+<pre style="background:#f7f7f7; padding:0.9em 1.1em; border:1px solid #ddd; overflow-x:auto; border-radius:4px;">
+<code>{
+  "nombre": "Pikachu",
+  "tipo": "eléctrico",
+  "nivel": 6,
+  "salud": 40,
+  "entrenador": { "id": 1 },
+  "habilidades": [
+    { "id": 1 },
+    { "id": 2 }
+  ]
+}
+</code>
+</pre>
+
+    <p style="margin-top:12px; color:#a00; font-weight:bold;">
+      <code>Importante:</code> Los IDs referenciados en <code>entrenador</code> y en <code>habilidades</code>
+      deben existir previamente en la base de datos. Si alguno no existe, la API devolverá un error
+      <em>404&nbsp;Not&nbsp;Found</em> o <em>500&nbsp;Internal&nbsp;Server&nbsp;Error</em>.
+    </p>
+  </section>
+
+  <!-- ONE-TO-MANY -->
+  <section style="margin-top:46px;">
+    <h3 style="color:#0055a4;">2. One-to-Many (Entrenador → Pokémon)</h3>
+
+    <p>
+      El lado inverso de la relación anterior: un <em>Entrenador</em> agrupa varios <em>Pokémon</em>.
+      En JPA anotamos la lista en la entidad Entrenador.
+    </p>
+
+    <p><strong>Análisis de anotaciones:</strong></p>
+    <ul style="margin-left:20px;">
+      <li><code>@OneToMany(mappedBy="entrenador", cascade=CascadeType.ALL, orphanRemoval=true)</code>: define la relación con propagación total y eliminación de huérfanos.</li>
+      <li><code>@JsonIgnore</code>: evita recursión infinita al serializar la lista de <em>Pokémon</em> dentro de <em>Entrenador</em>.</li>
+    </ul>
+
+<pre style="background:#f7f7f7; padding:0.9em 1.1em; border:1px solid #ddd; overflow-x:auto; border-radius:4px;">
+<code style="color:#c7254e;">
+@Entity
+@Table(name="entrenadores")
+public class <strong>Entrenador</strong> {
+    @Id @GeneratedValue
+    private Long id;
+    private String nombre;
+
+    @OneToMany(
+        mappedBy="entrenador",
+        cascade=CascadeType.ALL,
+        orphanRemoval=true
+    )
+    @JsonIgnore
+    private List<Pokemon> pokemons = new ArrayList<>();
+}
+</code>
+</pre>
+
+    <p style="margin-top:12px;">Al hacer <code>GET /api/v1/entrenadores/2/pokemons</code> el API devuelve:</p>
+
+<pre style="background:#f7f7f7; padding:0.9em 1.1em; border:1px solid #ddd; overflow-x:auto; border-radius:4px;">
+<code>[
+  { "id":4, "nombre":"Squirtle", "tipo":"agua", ... },
+  { "id":10,"nombre":"Starmie",  "tipo":"agua/psíquico", ... }
+]
+</code>
+</pre>
+  </section>
+
+  <!-- MANY-TO-MANY -->
+  <section style="margin-top:46px;">
+    <h3 style="color:#0055a4;">3. Many-to-Many (Pokémon ↔ Habilidad)</h3>
+
+    <p>
+      Tanto un Pokémon puede aprender varias Habilidades, como cada Habilidad puede ser usada por muchos Pokémon.
+      JPA crea una <em>tabla intermedia</em> para gestionar esta relación.
+    </p>
+
+<pre style="background:#f7f7f7; padding:0.9em 1.1em; border:1px solid #ddd; overflow-x:auto; border-radius:4px;">
+<code style="color:#c7254e;">
+@Entity
+public class Pokemon {
+    @Id @GeneratedValue
+    private Long id;
+    private String nombre;
+    private String tipo;
+    private int nivel;
+    private int salud;
+
+    @ManyToMany
+    @JoinTable(
+        name = "pokemon_habilidad",
+        joinColumns        = @JoinColumn(name="pokemon_id"),
+        inverseJoinColumns = @JoinColumn(name="habilidad_id")
+    )
+    private Set&lt;Habilidad&gt; habilidades = new HashSet&lt;&gt;();
+}
+
+@Entity
+public class Habilidad {
+    @Id @GeneratedValue
+    private Long id;
+    private String nombre;
+
+    @ManyToMany(mappedBy = "habilidades")
+    @JsonIgnore
+    private Set&lt;Pokemon&gt; pokemons = new HashSet&lt;&gt;();
+}
+</code>
+</pre>
+  </section>
+
+  <!-- RECURSOS EXTRA -->
+  <hr style="margin:46px 0; border:none; border-top:1px solid #ccc;">
+
+  <h3 style="color:#0055a4;">Recursos Adicionales</h3>
+  <ul style="margin-left:20px;">
+    <li>📘 <a href="https://www.baeldung.com/spring-data-rest-relationships" target="_blank">Baeldung: Spring Data REST Relationships</a></li>
+    <li>📘 <a href="https://www.geeksforgeeks.org/jpa-one-to-many-mapping/"        target="_blank">GeeksforGeeks: JPA One-to-Many Mapping</a></li>
+    <li>📘 <a href="https://www.geeksforgeeks.org/jpa-many-to-one-mapping/"        target="_blank">GeeksforGeeks: JPA Many-to-One Mapping</a></li>
+    <li>📘 <a href="https://www.baeldung.com/jpa-many-to-many"                     target="_blank">Baeldung: Guía de Many-to-Many</a></li>
+    <li>🛠️ Prueba en Postman o cURL todos los endpoints para observar los JSON resultantes.</li>
+  </ul>
+
+  <p style="margin-top:24px; font-style:italic; color:#666;">
+    Al terminar esta página, entenderás cómo se traducen los diagramas de clases a anotaciones JPA
+    y cómo consumirlas vía HTTP en tu API Spring Boot.
+  </p>
+</div>

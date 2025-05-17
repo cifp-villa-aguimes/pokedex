@@ -89,6 +89,27 @@ public class EntrenadorController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    /**
+     * PUT /api/v1/entrenadores/{id}/preserve
+     * Actualiza únicamente el nombre del Entrenador y conserva su lista de Pokémon.
+     */
+    @PutMapping("/{id}/preserve")
+    public ResponseEntity<Entrenador> updatePreserve(
+            @PathVariable @Positive Long id,
+            @Valid @RequestBody Entrenador e) {
+        log.info("Safely updating entrenador name, preserving pokemons, id: {}", id);
+        log.debug("PUT /api/v1/entrenadores/{}/preserve", id);
+        log.debug("Request body: {}", e);
+        return entrenadorSvc.getEntrenadorById(id)
+                .map(existing -> {
+                    // Solo actualizamos el nombre; no tocamos getPokemons()
+                    existing.setNombre(e.getNombre());
+                    Entrenador updated = entrenadorSvc.saveEntrenador(existing);
+                    return ResponseEntity.ok(updated);
+                })
+                .orElse(ResponseEntity.notFound().build());
+    }
+
     /** DELETE /api/v1/entrenadores/{id} → elimina un entrenador o 404 */
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable @Positive Long id) {
