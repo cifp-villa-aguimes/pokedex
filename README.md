@@ -1,4 +1,4 @@
-# Pokedex App Básico (API REST v1)
+# Pokedex App (API REST v1 & v2)
 
 ¡Bienvenido a la **Pokedex App Básico**, un ejemplo didáctico de una API REST construida con Spring Boot, Spring Data JPA y MySQL!
 
@@ -13,11 +13,12 @@
 5. [Estructura de Paquetes](#estructura-de-paquetes)
 6. [Endpoints de la API v1](#endpoints-de-la-api-v1)
    - Entrenadores
-   - Pokémon
    - Habilidades
-7. [Ejemplos de Peticiones (cURL)](#ejemplos-de-peticiones-curl)
-8. [Explicación de Relaciones JPA](#explicación-de-relaciones-jpa)
-9. [Buenas Prácticas y Siguientes Pasos](#buenas-prácticas-y-siguientes-pasos)
+   - Pokémon
+7. [Endpoints de la API v2 (Búsqueda con Query Params)](#endpoints-de-la-api-v2-búsqueda-con-query-params)
+8. [Ejemplos de Peticiones (cURL)](#ejemplos-de-peticiones-curl)
+9. [Explicación de Relaciones JPA](#explicación-de-relaciones-jpa)
+10. [Buenas Prácticas y Siguientes Pasos](#buenas-prácticas-y-siguientes-pasos)
 
 ---
 
@@ -147,6 +148,18 @@ com.damw.pokedex
 
 ---
 
+## 🆕 Endpoints de la API v2 (Búsqueda con Query Params)
+
+| Método | Ruta                                                                               | Descripción                                       |
+| ------ | ---------------------------------------------------------------------------------- | ------------------------------------------------- |
+| GET    | `/api/v2/pokemons/buscar`                                                          | Lista Pokémon con filtros y ordenación opcionales |
+| GET    | `/api/v2/pokemons/buscar?tipo=agua`                                                | Filtra por tipo “agua”                            |
+| GET    | `/api/v2/pokemons/buscar?nivelMin=10&nivelMax=50`                                  | Filtra por rango de nivel (10-50)                 |
+| GET    | `/api/v2/pokemons/buscar?sortBy=salud&order=desc`                                  | Ordena resultados por salud descendente           |
+| GET    | `/api/v2/pokemons/buscar?tipo=fuego&nivelMin=5&nivelMax=30&sortBy=nivel&order=asc` | Combinación de filtros y ordenación               |
+
+---
+
 ## 💻 Ejemplos de Peticiones (cURL)
 
 ```bash
@@ -172,6 +185,9 @@ curl http://localhost:8080/api/v1/entrenadores/1/pokemons
 
 # Obtener pokemons de una habilidad
 curl http://localhost:8080/api/v1/habilidades/5/pokemons
+
+# Búsqueda avanzada v2 (Query Params)
+curl "http://localhost:8080/api/v2/pokemons/buscar?tipo=agua&nivelMin=5&nivelMax=30&sortBy=nivel&order=asc"
 ```
 
 ---
@@ -211,6 +227,8 @@ curl http://localhost:8080/api/v1/habilidades/5/pokemons
 - Añade logs (`log.debug`, `log.info`) en controladores para depurar.
 - Considera validaciones avanzadas con DTOs o vistas JSON en proyectos más complejos.
 - ¡Prueba en Postman o cURL todas las rutas y observa cómo interactúan las relaciones!
+
+> **Nota:** En la versión 2 de la API se implementaron Query Params para filtrado y ordenación dinámica, usando `@RequestParam` y métodos de consulta derivados en Spring Data JPA.
 
 ---
 
