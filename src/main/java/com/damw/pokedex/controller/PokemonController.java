@@ -1,9 +1,13 @@
 package com.damw.pokedex.controller;
 
+// Este controlador maneja tanto v1 como v2 de Pokémons
 import com.damw.pokedex.model.Pokemon;
 import com.damw.pokedex.service.PokemonService;
+
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -12,13 +16,12 @@ import java.util.List;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Positive;
-import org.springframework.validation.annotation.Validated;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @RestController
-@RequestMapping("/api/v1/pokemons")
+@RequestMapping({ "/api/v1/pokemons", "/api/v2/pokemons" })
 @Validated
 public class PokemonController {
     private static final Logger log = LoggerFactory.getLogger(PokemonController.class);
@@ -115,5 +118,32 @@ public class PokemonController {
                     return ResponseEntity.noContent().<Void>build();
                 })
                 .orElse(ResponseEntity.notFound().build());
+    }
+
+    /**
+     * GET /api/v2/pokemons/buscar → Busca Pokémon por tipo y nivel, con orden
+     * asc/desc y campo configurable.
+     * 
+     * @param tipo     Tipo de Pokémon (opcional).
+     * @param nivelMin Nivel mínimo (opcional).
+     * @param nivelMax Nivel máximo (opcional).
+     * @param sort     Criterio de ordenación.
+     * @return Lista de Pokémon que cumplen los criterios de búsqueda.
+     */
+    @GetMapping("/buscar")
+    public ResponseEntity<List<Pokemon>> search(
+            @RequestParam(required = false) String tipo,
+            @RequestParam(required = false) Integer nivelMin,
+            @RequestParam(required = false) Integer nivelMax,
+            @RequestParam(defaultValue = "id") String sortBy,
+            @RequestParam(defaultValue = "asc") String order) {
+        // Determina dirección de la ordenación
+        Sort.Direction dir = order.equalsIgnoreCase("desc")
+                ? Sort.Direction.DESC
+                : Sort.Direction.ASC;
+        Sort sort = Sort.by(dir, sortBy);
+
+        List<Pokemon> resultados = pokemonSvc.searchPokemons(tipo, nivelMin, nivelMax, sort);
+        return ResponseEntity.ok(resultados);
     }
 }

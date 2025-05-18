@@ -2,6 +2,7 @@ package com.damw.pokedex.service;
 
 import com.damw.pokedex.model.Pokemon;
 import com.damw.pokedex.repository.PokemonRepository;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -38,5 +39,16 @@ public class PokemonService {
 
     public void deletePokemon(Long id) {
         pokemonRepo.deleteById(id);
+    }
+
+    /**
+     * Busca Pokémon según parámetros opcionales de filtro y orden.
+     */
+    public List<Pokemon> searchPokemons(String tipo, Integer nivelMin, Integer nivelMax, Sort sort) {
+        String tipoFilter = (tipo == null ? "" : tipo);
+        int min = (nivelMin == null ? 0 : nivelMin);
+        int max = (nivelMax == null ? Integer.MAX_VALUE : nivelMax);
+        return pokemonRepo.findByTipoContainingIgnoreCaseAndNivelBetween(
+                tipoFilter, min, max, sort);
     }
 }
