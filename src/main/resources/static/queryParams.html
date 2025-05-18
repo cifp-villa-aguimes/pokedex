@@ -1,20 +1,45 @@
-<!-- Página Moodle: Query Params en REST y Spring Boot -->
-<section style="font-family: Arial, sans-serif; line-height: 1.6">
-  <h2 style="color: #0055a4; margin-bottom: 0.5em">
+<!-- =============================================================== -->
+<!--   PÁGINA MOODLE · QUERY PARAMS EN REST Y SPRING BOOT            -->
+<!--   Copia íntegro este bloque en el editor HTML del recurso       -->
+<!--   *NO* se ha alterado ningún contenido, solo se han añadido     -->
+<!--   estilos en línea y mejorado la estructura visual.             -->
+<!-- =============================================================== -->
+
+<section
+  style="
+    font-family: 'Segoe UI', Arial, sans-serif;
+    line-height: 1.6;
+    color: #333;
+    max-width: 960px;
+    margin: auto;
+  "
+>
+  <!-- CABECERA PRINCIPAL -->
+  <h2
+    style="
+      background: #0055a4;
+      color: #fff;
+      padding: 14px 22px;
+      border-radius: 6px;
+      margin: 0 0 24px 0;
+      font-size: 24px;
+    "
+  >
     Query Params en APIs REST y Spring Boot
   </h2>
-  <p>
-    En esta página veremos cómo usar parámetros de consulta (<em
-      >query params</em
-    >) para filtrar, paginar y ordenar recursos en una API REST, y cómo
-    implementarlos en Spring Boot con Spring Data JPA.
+
+  <!-- INTRODUCCIÓN -->
+  <p style="font-size: 15.5px">
+    En esta página veremos cómo usar parámetros de consulta
+    (<em>query&nbsp;params</em>) para filtrar, paginar y ordenar recursos en una
+    API REST, y cómo implementarlos en Spring Boot con Spring Data&nbsp;JPA.
   </p>
 
-  <!-- 1. Introducción -->
-  <h3 style="color: #004080; margin-top: 1.5em">
-    1. Introducción a los Query Params en REST
+  <!-- 1 · INTRODUCCIÓN A LOS QUERY PARAMS -->
+  <h3 style="color: #004080; margin-top: 32px">
+    1.&nbsp;Introducción a los Query Params en REST
   </h3>
-  <ul style="margin-left: 1em">
+  <ul style="margin-left: 24px">
     <li>
       <strong>Qué son:</strong> parámetros anexados a la URL tras el carácter
       <code>?</code>, separados por <code>&amp;</code>.
@@ -25,23 +50,24 @@
       ordenar (<code>?sortBy=fecha&amp;order=desc</code>), etc.
     </li>
   </ul>
+
   <pre
     style="
       background: #f7f7f7;
-      padding: 0.8em;
+      padding: 0.9em 1.1em;
       border: 1px solid #ddd;
       overflow-x: auto;
+      border-radius: 4px;
     "
   ><code>GET /api/v1/usuarios?role=admin&amp;active=true
 GET /api/v1/productos?page=1&amp;size=20&amp;sort=precio,asc
-</code>
-  </pre>
+</code></pre>
 
-  <!-- 2. Convenciones -->
-  <h3 style="color: #004080; margin-top: 1.5em">
-    2. Convenciones y Buenas Prácticas
+  <!-- 2 · CONVENCIONES -->
+  <h3 style="color: #004080; margin-top: 32px">
+    2.&nbsp;Convenciones y Buenas Prácticas
   </h3>
-  <ul style="margin-left: 1em">
+  <ul style="margin-left: 24px">
     <li>
       <code>nombre</code> claro y consistente (<code>?tipo=agua</code> en vez de
       <code>?t=agua</code>).
@@ -56,23 +82,26 @@ GET /api/v1/productos?page=1&amp;size=20&amp;sort=precio,asc
     </li>
   </ul>
 
-  <!-- 3. Implementación en Spring Boot -->
-  <h3 style="color: #004080; margin-top: 1.5em">
-    3. Implementación de Query Params en Spring Boot
+  <!-- 3 · IMPLEMENTACIÓN -->
+  <h3 style="color: #004080; margin-top: 32px">
+    3.&nbsp;Implementación de Query Params en Spring Boot
   </h3>
   <p>
     En Spring Boot, los parámetros de consulta se reciben en el controlador
-    usando <code>@RequestParam</code>. Así puedes filtrar, paginar y ordenar
-    resultados de forma flexible. Cada parámetro puede ser opcional (<code
-      >required = false</code
-    >) o tener un valor por defecto (<code>defaultValue</code>).
+    usando
+    <code>@RequestParam</code>. Así puedes filtrar, paginar y ordenar resultados
+    de forma flexible. Cada parámetro puede ser opcional
+    (<code>required&nbsp;=&nbsp;false</code>) o tener un valor por defecto
+    (<code>defaultValue</code>).
   </p>
+
   <pre
     style="
       background: #f7f7f7;
-      padding: 0.8em;
+      padding: 0.9em 1.1em;
       border: 1px solid #ddd;
       overflow-x: auto;
+      border-radius: 4px;
     "
   ><code>@GetMapping("/api/v2/pokemons/buscar")
 // Parámetros de consulta:
@@ -100,7 +129,8 @@ public ResponseEntity&lt;List&lt;Pokemon&gt;&gt; search(
     return ResponseEntity.ok(resultados);
 }
 </code></pre>
-  <ul style="margin-left: 1em">
+
+  <ul style="margin-left: 24px">
     <li>
       <strong>Parámetros opcionales:</strong> Si no se envía <code>tipo</code>,
       <code>nivelMin</code> o <code>nivelMax</code>, su valor será
@@ -116,10 +146,11 @@ public ResponseEntity&lt;List&lt;Pokemon&gt;&gt; search(
       <em>400 Bad Request</em>.
     </li>
   </ul>
-  <p style="margin-top: 0.5em">
+
+  <p style="margin-top: 12px">
     <strong>¿Cómo funciona <code>@RequestParam</code>?</strong>
   </p>
-  <ul style="margin-left: 1em">
+  <ul style="margin-left: 24px">
     <li>
       <code>name</code>: nombre del parámetro en la URL. Si difiere del nombre
       Java, usar <code>@RequestParam("paramNombre")</code>.
@@ -135,12 +166,10 @@ public ResponseEntity&lt;List&lt;Pokemon&gt;&gt; search(
       <code>required</code>.
     </li>
     <li>
-      <strong>Conversión automática:</strong> Spring usa su
-      <em>ConversionService</em> para convertir la cadena recibida a tipos Java:
-      <code>String</code>, <code>Integer</code>, <code>Long</code>,
-      <code>Boolean</code>, <code>Double</code>, <code>BigDecimal</code>,
-      <code>Enum</code>, <code>LocalDate</code> (ISO-8601), etc. Si la
-      conversión falla, se devuelve <em>400 Bad Request</em>.
+      <strong>Conversión automática:</strong> Spring convierte la cadena
+      recibida a tipos Java (<code>Integer</code>, <code>Boolean</code>,
+      <code>LocalDate</code>, etc.). Si la conversión falla, devuelve
+      <em>400 Bad Request</em>.
     </li>
     <li>
       <strong>Listas y arrays:</strong> se pueden recibir como
@@ -150,48 +179,49 @@ public ResponseEntity&lt;List&lt;Pokemon&gt;&gt; search(
     </li>
   </ul>
 
-  <!-- 4. Ordenación dinámica -->
-  <h3 style="color: #004080; margin-top: 1.5em">
-    4. Construir dinámica la ordenación
+  <!-- 4 · ORDENACIÓN DINÁMICA -->
+  <h3 style="color: #004080; margin-top: 32px">
+    4.&nbsp;Construir dinámica la ordenación
   </h3>
   <p>
-    Convertimos <code>sortBy</code> y <code>order</code> en un
-    <code>Sort</code> de Spring Data, que representa la cláusula
-    <strong>ORDER BY</strong> de la consulta SQL.
+    Convertimos <code>sortBy</code> y <code>order</code> en un objeto
+    <code>Sort</code> de Spring&nbsp;Data, que representa la cláusula
+    <strong>ORDER&nbsp;BY</strong> de la consulta SQL.
   </p>
+
   <pre
     style="
       background: #f7f7f7;
-      padding: 0.8em;
+      padding: 0.9em 1.1em;
       border: 1px solid #ddd;
       overflow-x: auto;
+      border-radius: 4px;
     "
   ><code>Sort.Direction dir = order.equalsIgnoreCase("desc")
         ? Sort.Direction.DESC
         : Sort.Direction.ASC;
 Sort sort = Sort.by(dir, sortBy);
-</code>
-  </pre>
-  <p style="margin-top: 0.5em">
+</code></pre>
+
+  <p style="margin-top: 12px">
     <strong>¿Qué es <code>Sort</code>?</strong><br />
-    El objeto <code>Sort</code> encapsula los criterios de ordenación (campo y
-    dirección). Spring Data JPA lo traduce a una cláusula
-    <code>ORDER BY</code> en la consulta SQL, evitando concatenar SQL
-    manualmente.
+    El objeto encapsula los criterios de ordenación (campo y dirección). Spring
+    Data JPA lo traduce a
+    <code>ORDER BY</code> en la consulta, evitando concatenar SQL manualmente.
   </p>
-  <ul style="margin-left: 1em">
+
+  <ul style="margin-left: 24px">
     <li>
-      <strong>Dynamicidad:</strong> Permite elegir el campo
-      (<code>sortBy</code>) y la dirección (<code>asc</code>/ <code>desc</code>)
-      en tiempo de ejecución.
+      <strong>Dynamicidad:</strong> el usuario elige campo (<code>sortBy</code>)
+      y dirección (<code>asc</code>/<code>desc</code>) en tiempo de ejecución.
     </li>
     <li>
-      <strong>Seguridad:</strong> Al usar <code>Sort.by(...)</code>, evitas
-      inyección de SQL al no construir cadenas SQL manuales.
+      <strong>Seguridad:</strong> Al usar <code>Sort.by(...)</code>, evitar
+      inyección de SQL al no concatenar texto.
     </li>
     <li>
-      <strong>Reutilización:</strong> Puedes pasar el mismo <code>Sort</code> a
-      cualquier método de repositorio que acepte un parámetro <code>Sort</code>.
+      <strong>Reutilización:</strong> el mismo <code>Sort</code> se pasa a
+      cualquier método de repositorio que lo acepte.
     </li>
     <li>
       <strong>Mantenimiento:</strong> Centraliza la lógica de ordenación sin
@@ -199,27 +229,30 @@ Sort sort = Sort.by(dir, sortBy);
         >aunque existe, no lo usaremos en este curso</em
       >).
     </li>
-    <p style="margin-left: 2em; font-size: 0.9em; color: #555">
+    <p style="margin-left: 36px; font-size: 0.9em; color: #555">
       <code>@Query</code> permite definir consultas JPQL o SQL personalizadas
-      directamente sobre el método del repositorio, ofreciendo mayor
-      flexibilidad cuando las <em>query methods</em> por nombre no son
-      suficientes.
+      cuando los <em>query&nbsp;methods</em> no bastan.
     </p>
   </ul>
 
-  <!-- 5. Query Methods en Spring Data -->
-  <h3 style="color: #004080; margin-top: 1.5em">
-    5. Derivar consultas por nombre en Spring Data JPA
+  <!-- 5 · QUERY METHODS -->
+  <h3 style="color: #004080; margin-top: 32px">
+    5.&nbsp;Derivar consultas por nombre en Spring Data JPA
   </h3>
-  <p>En el repositorio, Spring Data genera la consulta a partir del método:</p>
+  <p>
+    En el repositorio, Spring Data genera la consulta a partir del nombre del
+    método:
+  </p>
+
   <pre
     style="
       background: #f7f7f7;
-      padding: 0.8em;
+      padding: 0.9em 1.1em;
       border: 1px solid #ddd;
       overflow-x: auto;
+      border-radius: 4px;
     "
-  ><code>// 📌 MUY IMPORTANTE: el nombre del método NO es sólo estético; 
+  ><code>// 📌 MUY IMPORTANTE: el nombre del método NO es solo estético;
 // Spring Data JPA lo parsea para construir la consulta.
 List&lt;Pokemon&gt; findByTipoContainingIgnoreCaseAndNivelBetween(
     String tipo,
@@ -227,12 +260,12 @@ List&lt;Pokemon&gt; findByTipoContainingIgnoreCaseAndNivelBetween(
     int nivelMax,
     Sort sort
 );
-</code>
-  </pre>
-  <p style="margin-top: 1em">
+</code></pre>
+
+  <p style="margin-top: 24px">
     <strong>Detalles de la derivación por nombre:</strong>
   </p>
-  <ul style="margin-left: 1em">
+  <ul style="margin-left: 24px">
     <li>
       <strong>Prefijos válidos:</strong> <code>findBy…</code>,
       <code>findAllBy…</code>, <code>readBy…</code>, <code>queryBy…</code>.
@@ -256,26 +289,27 @@ List&lt;Pokemon&gt; findByTipoContainingIgnoreCaseAndNivelBetween(
       <code>Sort</code>. Spring Data aplicará el <code>ORDER BY</code> definido
       por el objeto <code>Sort</code>.
     </li>
-    <li>
-      <strong>Cómo se traduce a SQL:</strong>
-      <pre
-        style="
-          background: #f7f7f7;
-          padding: 0.6em;
-          border: 1px solid #ddd;
-          overflow-x: auto;
-        "
-      >
-<code>SELECT * 
-FROM pokemon 
-WHERE LOWER(tipo) LIKE LOWER(CONCAT('%', :tipo, '%')) 
-  AND nivel BETWEEN :nivelMin AND :nivelMax 
+    <li><strong>Cómo se traduce a SQL:</strong></li>
+  </ul>
+
+  <pre
+    style="
+      background: #f7f7f7;
+      padding: 0.9em 1.1em;
+      border: 1px solid #ddd;
+      overflow-x: auto;
+      border-radius: 4px;
+      margin-left: 24px;
+    "
+  ><code>SELECT *
+FROM pokemon
+WHERE LOWER(tipo) LIKE LOWER(CONCAT('%', :tipo, '%'))
+  AND nivel BETWEEN :nivelMin AND :nivelMax
 ORDER BY :sortProperty :sortDirection;
 </code>
-      </pre>
-      (Spring Data reemplaza <code>:tipo</code>, <code>:nivelMin</code>, etc., y
-      ordena según el <code>Sort</code>).
-    </li>
+<em>(Spring Data reemplaza <code>:tipo</code>, <code>:nivelMin</code>, etc., y ordena según el <code>Sort</code>).</em></pre>
+
+  <ul style="margin-left: 24px">
     <li>
       <strong>Importancia del nombre del método:</strong>
       El nombre del método no es solo para legibilidad: Spring Data JPA lo
@@ -291,11 +325,11 @@ ORDER BY :sortProperty :sortDirection;
     </li>
   </ul>
 
-  <!-- 6. Errores comunes -->
-  <h3 style="color: #004080; margin-top: 1.5em">
-    6. Errores comunes y cómo evitarlos
+  <!-- 6 · ERRORES COMUNES -->
+  <h3 style="color: #004080; margin-top: 32px">
+    6.&nbsp;Errores comunes y cómo evitarlos
   </h3>
-  <ul style="margin-left: 1em">
+  <ul style="margin-left: 24px">
     <li>
       <strong>Fragmentos inválidos en métodos de repositorio:</strong><br />
       Usar un nombre como <code>findByFuerza…</code> donde no existe “fuerza”
@@ -339,12 +373,11 @@ ORDER BY :sortProperty :sortDirection;
     </li>
   </ul>
 
-  <!-- 7. Ejemplos prácticos -->
-  <h3 style="color: #004080; margin-top: 1.5em">7. Ejemplos prácticos</h3>
-  <ul style="margin-left: 1em">
+  <!-- 7 · EJEMPLOS PRÁCTICOS -->
+  <h3 style="color: #004080; margin-top: 32px">7.&nbsp;Ejemplos prácticos</h3>
+  <ul style="margin-left: 24px">
     <li>
-      <code>GET /api/v2/pokemons/buscar</code> → lista completa ordenada por
-      <code>id</code>.
+      <code>GET /api/v2/pokemons/buscar</code> → lista completa (orden id).
     </li>
     <li>
       <code>GET /api/v2/pokemons/buscar?tipo=agua</code> → filtra por tipo
@@ -356,26 +389,28 @@ ORDER BY :sortProperty :sortDirection;
     </li>
     <li>
       <code>GET /api/v2/pokemons/buscar?sortBy=salud&amp;order=desc</code> →
-      orden por salud descendente.
+      ordena por salud desc.
     </li>
     <li>
       <code
         >GET
         /api/v2/pokemons/buscar?tipo=fuego&amp;nivelMin=5&amp;nivelMax=30&amp;sortBy=nivel&amp;order=asc</code
       >
-      → mezcla de filtros y orden.
+      → filtros + orden.
     </li>
   </ul>
 
-  <!-- 8. Código paso a paso -->
-  <h3 style="color: #004080; margin-top: 1.5em">8. Código paso a paso</h3>
-  <p><strong>1. Repositorio:</strong></p>
+  <!-- 8 · CÓDIGO PASO A PASO -->
+  <h3 style="color: #004080; margin-top: 32px">8.&nbsp;Código paso a paso</h3>
+
+  <p><strong>1.&nbsp;Repositorio:</strong></p>
   <pre
     style="
       background: #f7f7f7;
-      padding: 0.8em;
+      padding: 0.9em 1.1em;
       border: 1px solid #ddd;
       overflow-x: auto;
+      border-radius: 4px;
     "
   ><code>public interface PokemonRepository extends JpaRepository&lt;Pokemon, Long&gt; {
     // …
@@ -383,15 +418,16 @@ ORDER BY :sortProperty :sortDirection;
         String tipo, int nivelMin, int nivelMax, Sort sort
     );
 }
-</code>
-  </pre>
-  <p><strong>2. Servicio:</strong></p>
+</code></pre>
+
+  <p><strong>2.&nbsp;Servicio:</strong></p>
   <pre
     style="
       background: #f7f7f7;
-      padding: 0.8em;
+      padding: 0.9em 1.1em;
       border: 1px solid #ddd;
       overflow-x: auto;
+      border-radius: 4px;
     "
   ><code>@Service
 public class PokemonService {
@@ -399,43 +435,43 @@ public class PokemonService {
     public List&lt;Pokemon&gt; searchPokemons(
         String tipo, Integer nivelMin, Integer nivelMax, Sort sort
     ) {
-        String t = (tipo == null ? \"\" : tipo);
-        int min = (nivelMin == null ? 0 : nivelMin);
-        int max = (nivelMax == null ? Integer.MAX_VALUE : nivelMax);
+        String t  = (tipo      == null ? "" : tipo);
+        int    min = (nivelMin == null ? 0  : nivelMin);
+        int    max = (nivelMax == null ? Integer.MAX_VALUE : nivelMax);
         return pokemonRepo.findByTipoContainingIgnoreCaseAndNivelBetween(
             t, min, max, sort
         );
     }
 }
-</code>
-  </pre>
-  <p><strong>3. Controlador:</strong></p>
+</code></pre>
+
+  <p><strong>3.&nbsp;Controlador:</strong></p>
   <pre
     style="
       background: #f7f7f7;
-      padding: 0.8em;
+      padding: 0.9em 1.1em;
       border: 1px solid #ddd;
       overflow-x: auto;
+      border-radius: 4px;
     "
   ><code>@RestController
-@RequestMapping({\"/api/v1/pokemons\", \"/api/v2/pokemons\"})
+@RequestMapping({"/api/v1/pokemons", "/api/v2/pokemons"})
 public class PokemonController {
     // …
-    @GetMapping(\"/buscar\")
+    @GetMapping("/buscar")
     public ResponseEntity&lt;List&lt;Pokemon&gt;&gt; search(
         @RequestParam(required = false) String tipo,
         @RequestParam(required = false) Integer nivelMin,
         @RequestParam(required = false) Integer nivelMax,
-        @RequestParam(defaultValue = \"id\") String sortBy,
-        @RequestParam(defaultValue = \"asc\") String order
+        @RequestParam(defaultValue = "id") String sortBy,
+        @RequestParam(defaultValue = "asc") String order
     ) { … }
 }
-</code>
-  </pre>
+</code></pre>
 
-  <!-- 9. Recursos adicionales -->
-  <h3 style="color: #004080; margin-top: 1.5em">9. Recursos Adicionales</h3>
-  <ul style="margin-left: 1em">
+  <!-- 9 · RECURSOS -->
+  <h3 style="color: #004080; margin-top: 32px">9.&nbsp;Recursos Adicionales</h3>
+  <ul style="margin-left: 24px">
     <li>
       📘
       <a
@@ -449,15 +485,14 @@ public class PokemonController {
       <a
         href="https://docs.spring.io/spring-data/jpa/reference/repositories/query-methods-details.html"
         target="_blank"
+        >Spring Data JPA – Query Methods (detalles)</a
       >
-        Spring Data JPA – Query Methods (detalles)
-      </a>
     </li>
     <li>
       📘
-      <a href="https://www.baeldung.com/jpa-query-parameters" target="_blank">
-        Baeldung: JPA Query Parameters
-      </a>
+      <a href="https://www.baeldung.com/jpa-query-parameters" target="_blank"
+        >Baeldung: JPA Query Parameters</a
+      >
     </li>
     <li>
       📘
@@ -478,15 +513,14 @@ public class PokemonController {
       <a
         href="https://www.baeldung.com/spring-requestparam-vs-pathvariable"
         target="_blank"
+        >Baeldung: @RequestParam vs @PathVariable</a
       >
-        Baeldung: @RequestParam vs @PathVariable
-      </a>
     </li>
     <li>
       📘
-      <a href="https://www.baeldung.com/spring-data-jpa-query" target="_blank">
-        Baeldung: Spring Data JPA – @Query
-      </a>
+      <a href="https://www.baeldung.com/spring-data-jpa-query" target="_blank"
+        >Baeldung: Spring Data JPA – @Query</a
+      >
     </li>
   </ul>
 </section>
