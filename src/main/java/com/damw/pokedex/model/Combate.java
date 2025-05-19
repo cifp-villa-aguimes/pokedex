@@ -12,12 +12,18 @@ public class Combate {
     private Long id;
 
     @ManyToOne(optional = false)
-    @JoinColumn(name = "atacante_id", nullable = false)
-    private Pokemon atacante;
+    @JoinColumn(name = "player_a_id", nullable = false)
+    private Pokemon playerA;
+
+    @Column(name = "salud_player_a", nullable = false)
+    private int saludPlayerA;
 
     @ManyToOne(optional = false)
-    @JoinColumn(name = "defensor_id", nullable = false)
-    private Pokemon defensor;
+    @JoinColumn(name = "player_b_id", nullable = false)
+    private Pokemon playerB;
+
+    @Column(name = "salud_player_b", nullable = false)
+    private int saludPlayerB;
 
     @Column(name = "turno_actual", nullable = false)
     private int turnoActual = 0;
@@ -33,9 +39,12 @@ public class Combate {
     public Combate() {
     }
 
-    public Combate(Pokemon atacante, Pokemon defensor) {
-        this.atacante = atacante;
-        this.defensor = defensor;
+    public Combate(Pokemon playerA, Pokemon playerB) {
+        this.playerA = playerA;
+        this.playerB = playerB;
+        // Inicializa la salud de combate con la salud real de cada Pokémon
+        this.saludPlayerA = playerA.getSalud();
+        this.saludPlayerB = playerB.getSalud();
     }
 
     // Getters and setters
@@ -43,20 +52,36 @@ public class Combate {
         return id;
     }
 
-    public Pokemon getAtacante() {
-        return atacante;
+    public Pokemon getPlayerA() {
+        return playerA;
     }
 
-    public void setAtacante(Pokemon atacante) {
-        this.atacante = atacante;
+    public void setPlayerA(Pokemon playerA) {
+        this.playerA = playerA;
     }
 
-    public Pokemon getDefensor() {
-        return defensor;
+    public int getSaludPlayerA() {
+        return saludPlayerA;
     }
 
-    public void setDefensor(Pokemon defensor) {
-        this.defensor = defensor;
+    public void setSaludPlayerA(int saludPlayerA) {
+        this.saludPlayerA = saludPlayerA;
+    }
+
+    public Pokemon getPlayerB() {
+        return playerB;
+    }
+
+    public void setPlayerB(Pokemon playerB) {
+        this.playerB = playerB;
+    }
+
+    public int getSaludPlayerB() {
+        return saludPlayerB;
+    }
+
+    public void setSaludPlayerB(int saludPlayerB) {
+        this.saludPlayerB = saludPlayerB;
     }
 
     public int getTurnoActual() {

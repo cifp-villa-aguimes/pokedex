@@ -14,13 +14,13 @@ public interface CombatSessionService {
     List<Combate> getActiveCombats();
 
     /**
-     * Inicia un combate entre dos Pokémon.
+     * Inicia un combate entre dos jugadores A y B.
      * 
-     * @param attackerId ID del Pokémon atacante.
-     * @param defenderId ID del Pokémon defensor.
+     * @param playerAId ID del Pokémon jugador A.
+     * @param playerBId ID del Pokémon jugador B.
      * @return ID del combate iniciado.
      */
-    Long startCombat(Long attackerId, Long defenderId);
+    Long startCombat(Long playerAId, Long playerBId);
 
     /**
      * Ejecuta un turno en el combate indicado, registra el turno y actualiza el
@@ -47,4 +47,12 @@ public interface CombatSessionService {
      * @return Lista de turnos del combate.
      */
     List<CombateTurno> getTurnsForCombat(Long combateId);
+
+    /**
+     * Recupera todos los turnos en los que un Pokémon actuó como atacante.
+     *
+     * @param atacanteId ID del Pokémon atacante.
+     * @return lista de CombateTurno donde aparece como atacante.
+     */
+    List<CombateTurno> getTurnsByAttacker(Long atacanteId);
 }

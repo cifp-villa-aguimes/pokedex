@@ -14,6 +14,10 @@ public class CombateTurno {
     @JoinColumn(name = "combate_id", nullable = false)
     private Combate combate;
 
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "atacante_id", nullable = false)
+    private Pokemon atacante;
+
     @Column(name = "numero_turno", nullable = false)
     private int numeroTurno;
 
@@ -39,6 +43,16 @@ public class CombateTurno {
         this.saludDefensorAntes = saludDefensorAntes;
     }
 
+    public CombateTurno(Combate combate, int numeroTurno, int danoInfligido,
+            int saludAtacanteAntes, int saludDefensorAntes, Pokemon atacante) {
+        this.combate = combate;
+        this.numeroTurno = numeroTurno;
+        this.danoInfligido = danoInfligido;
+        this.saludAtacanteAntes = saludAtacanteAntes;
+        this.saludDefensorAntes = saludDefensorAntes;
+        this.atacante = atacante;
+    }
+
     // Getters and Setters
     public Long getId() {
         return id;
@@ -50,6 +64,14 @@ public class CombateTurno {
 
     public void setCombate(Combate combate) {
         this.combate = combate;
+    }
+
+    public Pokemon getAtacante() {
+        return atacante;
+    }
+
+    public void setAtacante(Pokemon atacante) {
+        this.atacante = atacante;
     }
 
     public int getNumeroTurno() {

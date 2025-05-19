@@ -10,6 +10,8 @@ import com.damw.pokedex.repository.PokemonRepository;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
+import org.springframework.http.HttpStatus;
 
 @Transactional
 public abstract class AbstractCombatService implements CombatSessionService {
@@ -38,51 +40,69 @@ public abstract class AbstractCombatService implements CombatSessionService {
     }
 
     @Override
-    public Long startCombat(Long attackerId, Long defenderId) {
+    public Long startCombat(Long playerAId, Long playerBId) {
         // Lógica genérica de inicio de combate
-        Pokemon atk = pokemonRepo.findById(attackerId).orElseThrow();
-        Pokemon def = pokemonRepo.findById(defenderId).orElseThrow();
-        Combate combate = new Combate(atk, def);
+        Pokemon playerA = pokemonRepo.findById(playerAId).orElseThrow();
+        Pokemon playerB = pokemonRepo.findById(playerBId).orElseThrow();
+        Combate combate = new Combate(playerA, playerB);
         combateRepo.save(combate);
         return combate.getId();
     }
 
     @Override
     public Combate executeTurn(Long combateId) {
-        // Carga el combate
-        Combate combate = combateRepo.findById(combateId).orElseThrow();
+        Combate combate = combateRepo.findById(combateId)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
+                        "Combate no encontrado con id " + combateId));
 
-        // 1) Si ya está finalizado, lanzamos excepción
         if (combate.getEstado() != EstadoCombate.EN_CURSO) {
             throw new IllegalStateException("No se puede ejecutar turno: combate ya finalizado");
         }
 
-        // 2) Tomamos salud antes del ataque
-        int beforeAtk = combate.getAtacante().getSalud();
-        int beforeDef = combate.getDefensor().getSalud();
+        // Incrementa el turno antes de decidir roles (turno 1 = atacante original)
+        int nextTurn = combate.getTurnoActual() + 1;
+        combate.setTurnoActual(nextTurn);
 
-        // 3) Calculamos daño y aplicamos con mínimo 0
-        int damage = calculateDamage(combate.getAtacante(), combate.getDefensor());
-        int newDefHealth = Math.max(beforeDef - damage, 0);
-        combate.getDefensor().setSalud(newDefHealth);
+        // Determina atacante/defensor alternando por número de turno (impares playerA,
+        // pares playerB)
+        boolean playerAAtaca = (nextTurn % 2 != 0);
+        Pokemon atacante = playerAAtaca
+                ? combate.getPlayerA()
+                : combate.getPlayerB();
+        Pokemon defensor = playerAAtaca
+                ? combate.getPlayerB()
+                : combate.getPlayerA();
 
-        // 4) Incrementamos el número de turno
-        combate.setTurnoActual(combate.getTurnoActual() + 1);
+        // Salud antes del ataque según jugador
+        int saludAntesAtk = playerAAtaca ? combate.getSaludPlayerA() : combate.getSaludPlayerB();
+        int saludAntesDef = playerAAtaca ? combate.getSaludPlayerB() : combate.getSaludPlayerA();
 
-        // 5) Guardamos el detalle del turno
+        // Cálculo y aplicación de daño
+        int damage = calculateDamage(atacante, defensor);
+        int newDefHealth = Math.max(saludAntesDef - damage, 0);
+        // Aplica el daño en la salud de combate, no en la entidad Pokémon
+        if (playerAAtaca) {
+            combate.setSaludPlayerB(newDefHealth);
+        } else {
+            combate.setSaludPlayerA(newDefHealth);
+        }
+
+        // Guarda el turno con atacante explícito
         turnoRepo.save(new CombateTurno(
                 combate,
                 combate.getTurnoActual(),
                 damage,
-                beforeAtk,
-                beforeDef));
+                saludAntesAtk,
+                saludAntesDef,
+                atacante));
 
-        // 6) Si la salud del defensor llega a 0, marcamos combate finalizado
+        // Marca finalizado si salud <= 0
         if (newDefHealth <= 0) {
             combate.setEstado(EstadoCombate.FINALIZADO);
         }
 
-        // 7) Persistimos y devolvemos el estado actualizado
+        // Persiste y devuelve el combate actualizado
         return combateRepo.save(combate);
     }
 
@@ -96,6 +116,12 @@ public abstract class AbstractCombatService implements CombatSessionService {
     @Transactional(readOnly = true)
     public List<CombateTurno> getTurnsForCombat(Long combateId) {
         return turnoRepo.findByCombate_Id(combateId);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<CombateTurno> getTurnsByAttacker(Long atacanteId) {
+        return turnoRepo.findByAtacante_Id(atacanteId);
     }
 
     /**

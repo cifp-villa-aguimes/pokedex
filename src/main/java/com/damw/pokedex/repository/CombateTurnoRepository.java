@@ -13,4 +13,12 @@ public interface CombateTurnoRepository extends JpaRepository<CombateTurno, Long
      * @return lista de CombateTurno
      */
     List<CombateTurno> findByCombate_Id(Long combateId);
+
+    /**
+     * Recupera todos los turnos en los que un Pokémon actuó como atacante.
+     *
+     * @param atacanteId ID del Pokémon atacante.
+     * @return lista de CombateTurno donde aparece como atacante.
+     */
+    List<CombateTurno> findByAtacante_Id(Long atacanteId);
 }
