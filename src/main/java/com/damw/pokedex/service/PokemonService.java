@@ -1,54 +1,58 @@
 package com.damw.pokedex.service;
 
 import com.damw.pokedex.model.Pokemon;
-import com.damw.pokedex.repository.PokemonRepository;
 import org.springframework.data.domain.Sort;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import java.util.List;
 import java.util.Optional;
 
-@Service
-public class PokemonService {
+public interface PokemonService {
+    /**
+     * Devuelve una lista de todos los Pokémon.
+     *
+     * @return Lista de Pokémon.
+     */
+    List<Pokemon> getAllPokemons();
 
-    private final PokemonRepository pokemonRepo;
+    /**
+     * Devuelve un Pokémon por su ID.
+     *
+     * @param id ID del Pokémon.
+     * @return Pokémon correspondiente al ID.
+     */
+    Optional<Pokemon> getPokemonById(Long id);
 
-    public PokemonService(PokemonRepository pokemonRepo) {
-        this.pokemonRepo = pokemonRepo;
-    }
+    /**
+     * Guarda un Pokémon en la base de datos.
+     *
+     * @param p Pokémon a guardar.
+     * @return Pokémon guardado.
+     */
+    Pokemon savePokemon(Pokemon p);
 
-    @Transactional(readOnly = true)
-    public List<Pokemon> getAllPokemons() {
-        return pokemonRepo.findAll();
-    }
+    /**
+     * Actualiza un Pokémon existente.
+     *
+     * @param id ID del Pokémon a actualizar.
+     * @param p  Pokémon con los nuevos datos.
+     * @return Pokémon actualizado.
+     */
+    Pokemon updatePokemon(Long id, Pokemon p);
 
-    @Transactional(readOnly = true)
-    public Optional<Pokemon> getPokemonById(Long id) {
-        return pokemonRepo.findById(id);
-    }
-
-    public Pokemon savePokemon(Pokemon p) {
-        return pokemonRepo.save(p);
-    }
-
-    public Pokemon updatePokemon(Long id, Pokemon p) {
-        p.setId(id);
-        return pokemonRepo.save(p);
-    }
-
-    public void deletePokemon(Long id) {
-        pokemonRepo.deleteById(id);
-    }
+    /**
+     * Elimina un Pokémon por su ID.
+     *
+     * @param id ID del Pokémon a eliminar.
+     */
+    void deletePokemon(Long id);
 
     /**
      * Busca Pokémon según parámetros opcionales de filtro y orden.
+     *
+     * @param tipo     Tipo de Pokémon (opcional).
+     * @param nivelMin Nivel mínimo (opcional).
+     * @param nivelMax Nivel máximo (opcional).
+     * @param sort     Ordenación (opcional).
+     * @return Lista de Pokémon que cumplen los criterios.
      */
-    public List<Pokemon> searchPokemons(String tipo, Integer nivelMin, Integer nivelMax, Sort sort) {
-        String tipoFilter = (tipo == null ? "" : tipo);
-        int min = (nivelMin == null ? 0 : nivelMin);
-        int max = (nivelMax == null ? Integer.MAX_VALUE : nivelMax);
-        return pokemonRepo.findByTipoContainingIgnoreCaseAndNivelBetween(
-                tipoFilter, min, max, sort);
-    }
+    List<Pokemon> searchPokemons(String tipo, Integer nivelMin, Integer nivelMax, Sort sort);
 }

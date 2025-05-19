@@ -1,42 +1,47 @@
 package com.damw.pokedex.service;
 
 import com.damw.pokedex.model.Habilidad;
-import com.damw.pokedex.repository.HabilidadRepository;
-
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import java.util.List;
 import java.util.Optional;
 
-@Service
-public class HabilidadService {
-    private final HabilidadRepository habilidadRepo;
+public interface HabilidadService {
+    /**
+     * Obtiene todas las habilidades.
+     *
+     * @return una lista de habilidades
+     */
+    List<Habilidad> getAllHabilidades();
 
-    public HabilidadService(HabilidadRepository habilidadRepo) {
-        this.habilidadRepo = habilidadRepo;
-    }
+    /**
+     * Obtiene una habilidad por su ID.
+     *
+     * @param id el ID de la habilidad
+     * @return un objeto Optional que contiene la habilidad si se encuentra, o
+     *         vacío si no
+     */
+    Optional<Habilidad> getHabilidadById(Long id);
 
-    @Transactional(readOnly = true)
-    public List<Habilidad> getAllHabilidades() {
-        return habilidadRepo.findAll();
-    }
+    /**
+     * Guarda una nueva habilidad o actualiza una existente.
+     *
+     * @param h el objeto Habilidad a guardar
+     * @return la habilidad guardada
+     */
+    Habilidad saveHabilidad(Habilidad h);
 
-    @Transactional(readOnly = true)
-    public Optional<Habilidad> getHabilidadById(Long id) {
-        return habilidadRepo.findById(id);
-    }
+    /**
+     * Actualiza una habilidad existente.
+     *
+     * @param id el ID de la habilidad a actualizar
+     * @param h  el objeto Habilidad con los nuevos datos
+     * @return la habilidad actualizada
+     */
+    Habilidad updateHabilidad(Long id, Habilidad h);
 
-    public Habilidad saveHabilidad(Habilidad h) {
-        return habilidadRepo.save(h);
-    }
-
-    public Habilidad updateHabilidad(Long id, Habilidad h) {
-        h.setId(id);
-        return habilidadRepo.save(h);
-    }
-
-    public void deleteHabilidad(Long id) {
-        habilidadRepo.deleteById(id);
-    }
+    /**
+     * Elimina una habilidad por su ID.
+     *
+     * @param id el ID de la habilidad a eliminar
+     */
+    void deleteHabilidad(Long id);
 }

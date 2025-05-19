@@ -1,43 +1,47 @@
 package com.damw.pokedex.service;
 
 import com.damw.pokedex.model.Entrenador;
-import com.damw.pokedex.repository.EntrenadorRepository;
-
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import java.util.List;
 import java.util.Optional;
 
-@Service
-public class EntrenadorService {
-    private final EntrenadorRepository entrenadorRepo;
+public interface EntrenadorService {
+    /**
+     * Obtiene todos los entrenadores.
+     *
+     * @return una lista de entrenadores
+     */
+    List<Entrenador> getAllEntrenadores();
 
-    public EntrenadorService(EntrenadorRepository entrenadorRepo) {
-        this.entrenadorRepo = entrenadorRepo;
-    }
+    /**
+     * Obtiene un entrenador por su ID.
+     *
+     * @param id el ID del entrenador
+     * @return un objeto Optional que contiene el entrenador si se encuentra, o
+     *         vacío si no
+     */
+    Optional<Entrenador> getEntrenadorById(Long id);
 
-    @Transactional(readOnly = true)
-    public List<Entrenador> getAllEntrenadores() {
-        return entrenadorRepo.findAll();
-    }
+    /**
+     * Actualiza un entrenador existente.
+     *
+     * @param id el ID del entrenador a actualizar
+     * @param e  el objeto Entrenador con los nuevos datos
+     * @return el entrenador actualizado
+     */
+    Entrenador updateEntrenador(Long id, Entrenador e);
 
-    @Transactional(readOnly = true)
-    public Optional<Entrenador> getEntrenadorById(Long id) {
-        return entrenadorRepo.findById(id);
-    }
+    /**
+     * Guarda un nuevo entrenador o actualiza uno existente.
+     *
+     * @param e el objeto Entrenador a guardar
+     * @return el entrenador guardado
+     */
+    Entrenador saveEntrenador(Entrenador e);
 
-    public Entrenador saveEntrenador(Entrenador e) {
-        return entrenadorRepo.save(e);
-    }
-
-    public Entrenador updateEntrenador(Long id, Entrenador e) {
-        e.setId(id);
-        return entrenadorRepo.save(e);
-    }
-
-    public void deleteEntrenador(Long id) {
-        entrenadorRepo.deleteById(id);
-    }
-
+    /**
+     * Elimina un entrenador por su ID.
+     *
+     * @param id el ID del entrenador a eliminar
+     */
+    void deleteEntrenador(Long id);
 }
