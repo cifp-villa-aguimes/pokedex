@@ -31,3 +31,7 @@ build/
 
 ### VS Code ###
 .vscode/
+
+# Archivos generados por el sistema operativo
+.DS_Store
+Thumbs.db
