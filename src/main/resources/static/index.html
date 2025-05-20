@@ -2,6 +2,10 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
     <title>Pokedex API</title>
     <link
       rel="stylesheet"
@@ -9,214 +13,241 @@
     />
   </head>
   <body>
-    <div class="container mt-5">
-      <div class="row">
-        <div class="col-md-8 offset-md-2">
-          <h2>Orden de uso de la API</h2>
-          <ol class="mb-4">
-            <li>Crear <strong>Entrenador</strong></li>
-            <li>Crear <strong>Habilidad</strong></li>
-            <li>
-              Crear <strong>Pokémon</strong> asignándolo a un entrenador y
-              habilidad
-            </li>
-            <li>Consultar recursos (Entrenador, Habilidad, Pokémon)</li>
-          </ol>
-
-          <h2>Endpoints y ejemplos de payload</h2>
-
-          <h3>Entrenadores</h3>
-          <ul class="list-group mb-4">
-            <li class="list-group-item">
-              <code>GET /api/v1/entrenadores</code> – Obtener todos los
-              entrenadores
-            </li>
-            <li class="list-group-item">
-              <code>GET /api/v1/entrenadores/{id}</code> – Obtener entrenador
-              por ID
-            </li>
-            <li class="list-group-item">
-              <code>GET /api/v1/entrenadores/{id}/pokemons</code> – Obtener
-              todos los Pokémon de un entrenador
-            </li>
-            <li class="list-group-item">
-              <code>POST /api/v1/entrenadores</code> – Crear nuevo entrenador<br />
-              <strong>Payload:</strong>
-              <pre class="mt-2 mb-2">
-{
-  "nombre": "Ash Ketchum"
-}
-</pre
-              >
-            </li>
-            <li class="list-group-item">
-              <code>PUT /api/v1/entrenadores/{id}</code> – Actualizar
-              entrenador<br />
-              <strong>Payload:</strong>
-              <pre class="mt-2 mb-2">
-{
-  "nombre": "Ash Ketchum"
-}
-</pre
-              >
-            </li>
-            <li class="list-group-item">
-              <code>DELETE /api/v1/entrenadores/{id}</code> – Eliminar
-              entrenador
-            </li>
-          </ul>
-
-          <h3>Habilidades</h3>
-          <ul class="list-group mb-4">
-            <li class="list-group-item">
-              <code>GET /api/v1/habilidades</code> – Obtener todas las
-              habilidades
-            </li>
-            <li class="list-group-item">
-              <code>GET /api/v1/habilidades/{id}</code> – Obtener habilidad por
-              ID
-            </li>
-            <li class="list-group-item">
-              <code>GET /api/v1/habilidades/{id}/pokemons</code> – Obtener todos
-              los Pokémon asociados a una habilidad
-            </li>
-            <li class="list-group-item">
-              <code>POST /api/v1/habilidades</code> – Crear nueva habilidad<br />
-              <strong>Payload:</strong>
-              <pre class="mt-2 mb-2">
-{
-  "nombre": "impactrueno"
-}
-</pre
-              >
-            </li>
-            <li class="list-group-item">
-              <code>PUT /api/v1/habilidades/{id}</code> – Actualizar
-              habilidad<br />
-              <strong>Payload:</strong>
-              <pre class="mt-2 mb-2">
-{
-  "nombre": "impactrueno mejorado"
-}
-</pre
-              >
-            </li>
-            <li class="list-group-item">
-              <code>DELETE /api/v1/habilidades/{id}</code> – Eliminar habilidad
-            </li>
-          </ul>
-
-          <h3>Pokémon</h3>
-          <ul class="list-group mb-4">
-            <li class="list-group-item">
-              <code>GET /api/v1/pokemons</code> – Obtener todos los Pokémon
-            </li>
-            <li class="list-group-item">
-              <code>GET /api/v1/pokemons/{id}</code> – Obtener Pokémon por ID
-            </li>
-            <li class="list-group-item">
-              <code>POST /api/v1/pokemons</code> – Crear nuevo Pokémon<br />
-              <strong>Payload:</strong>
-              <pre class="mt-2 mb-2">
-{
-  "nombre": "Pikachu",
-  "tipo": "eléctrico",
-  "nivel": 5,
-  "salud": 35,
-  "entrenador": { "id": 1 },
-  "habilidades": [
-    { "id": 1 },
-    { "id": 2 }
-  ]
-}
-</pre
-              >
-            </li>
-            <li class="list-group-item">
-              <code>PUT /api/v1/pokemons/{id}</code> – Reemplazar Pokémon<br />
-              <strong>Payload:</strong>
-              <pre class="mt-2 mb-2">
-{
-  "nombre": "Pikachu",
-  "tipo": "eléctrico",
-  "nivel": 6,
-  "salud": 40,
-  "entrenador": { "id": 2 },
-  "habilidades": [
-    { "id": 3 },
-    { "id": 4 }
-  ]
-}
-</pre
-              >
-            </li>
-            <li class="list-group-item">
-              <code>DELETE /api/v1/pokemons/{id}</code> – Eliminar Pokémon
-            </li>
-            <li class="list-group-item list-group-item-secondary">
-              <strong>Búsqueda avanzada de v2</strong>
-            </li>
-            <li class="list-group-item">
-              <code>GET /api/v2/pokemons/buscar</code> – Buscar todos los
-              Pokémon con filtros por defecto
-            </li>
-            <li class="list-group-item">
-              <code>GET /api/v2/pokemons/buscar?tipo=agua</code> – Filtrar por
-              tipo “agua”
-            </li>
-            <li class="list-group-item">
-              <code
-                >GET /api/v2/pokemons/buscar?nivelMin=10&amp;nivelMax=50</code
-              >
-              – Filtrar por nivel entre 10 y 50
-            </li>
-            <li class="list-group-item">
-              <code
-                >GET /api/v2/pokemons/buscar?sortBy=salud&amp;order=desc</code
-              >
-              – Ordenar por salud descendente
-            </li>
-            <li class="list-group-item">
-              <code
-                >GET
-                /api/v2/pokemons/buscar?tipo=agua&amp;nivelMin=5&amp;nivelMax=30&amp;sortBy=nivel&amp;order=asc</code
-              >
-              – Combinación de filtros y ordenación
-            </li>
-          </ul>
-
-          <h3>Combates (API v2)</h3>
-          <ul class="list-group mb-4">
-            <li class="list-group-item">
-              <code>POST /api/v2/combates?playerAId={idA}&playerBId={idB}</code>
-              – Inicia un nuevo combate (bidireccional) y devuelve el ID.
-            </li>
-            <li class="list-group-item">
-              <code>GET /api/v2/combates/en-curso</code> – Lista todos los
-              combates que están en curso.
-            </li>
-            <li class="list-group-item">
-              <code>POST /api/v2/combates/{combateId}/turno</code> – Ejecuta el
-              siguiente turno alternando atacante y devuelve el turno ejecutado.
-            </li>
-            <li class="list-group-item">
-              <code>GET /api/v2/combates/{combateId}</code> – Obtiene el estado
-              actual del combate (saludA, saludB, turnoActual, estado).
-            </li>
-            <li class="list-group-item">
-              <code>GET /api/v2/combates/{combateId}/turnos</code> – Lista todos
-              los turnos ejecutados en el combate.
-            </li>
-            <li class="list-group-item">
-              <code
-                >GET
-                /api/v2/combates/turnos/por-atacante?atacanteId={pokemonId}</code
-              >
-              – Filtra y devuelve los turnos donde el Pokémon ataca.
-            </li>
-          </ul>
-        </div>
+    <!-- Navbar de secciones -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light mb-4">
+      <a class="navbar-brand" href="#">Pokedex API</a>
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-toggle="collapse"
+        data-target="#navbarNav"
+        aria-controls="navbarNav"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link" href="#orden">Orden de uso</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#entrenadores">Entrenadores</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#habilidades">Habilidades</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#pokemons">Pokémon</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#combates">Combates</a>
+          </li>
+        </ul>
       </div>
+    </nav>
+
+    <div class="container">
+      <!-- Sección: Orden de Uso -->
+      <section id="orden" class="mb-5">
+        <h2>1. Orden de uso de la API</h2>
+        <ol>
+          <li>Crear <strong>Entrenador</strong></li>
+          <li>Crear <strong>Habilidad</strong></li>
+          <li>
+            Crear <strong>Pokémon</strong> asignándolo a un entrenador y
+            habilidad
+          </li>
+          <li>Consultar recursos (Entrenador, Habilidad, Pokémon)</li>
+          <li>
+            Simular <strong>Combate</strong> (API v2): iniciar combate, ejecutar
+            turnos y consultar resultados
+          </li>
+        </ol>
+      </section>
+
+      <!-- Sección: Entrenadores -->
+      <section id="entrenadores" class="mb-5">
+        <h2>2. Entrenadores</h2>
+        <div class="card">
+          <div class="card-body">
+            <ul class="list-unstyled mb-0">
+              <li>
+                <code>GET /api/v1/entrenadores</code> – Obtener todos los
+                entrenadores
+              </li>
+              <li>
+                <code>GET /api/v1/entrenadores/{id}</code> – Obtener entrenador
+                por ID
+              </li>
+              <li>
+                <code>GET /api/v1/entrenadores/{id}/pokemons</code> – Obtener
+                Pokémon de un entrenador
+              </li>
+              <li>
+                <code>POST /api/v1/entrenadores</code> – Crear entrenador
+                <pre class="mt-2"><code>{
+  "nombre": "Ash Ketchum"
+}</code></pre>
+              </li>
+              <li>
+                <code>PUT /api/v1/entrenadores/{id}</code> – Actualizar
+                entrenador
+                <pre class="mt-2"><code>{
+  "nombre": "Ash Ketchum Updated"
+}</code></pre>
+              </li>
+              <li>
+                <code>PUT /api/v1/entrenadores/{id}/preserve</code> – Actualiza
+                solo el nombre, preservando Pokémon
+                <pre class="mt-2"><code>{
+  "nombre": "Ash Ketchum"
+}</code></pre>
+              </li>
+              <li>
+                <code>DELETE /api/v1/entrenadores/{id}</code> – Eliminar
+                entrenador
+              </li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- Sección: Habilidades -->
+      <section id="habilidades" class="mb-5">
+        <h2>3. Habilidades</h2>
+        <div class="card">
+          <div class="card-body">
+            <ul class="list-unstyled mb-0">
+              <li><code>GET /api/v1/habilidades</code> – Obtener todas</li>
+              <li>
+                <code>GET /api/v1/habilidades/{id}</code> – Obtener por ID
+              </li>
+              <li>
+                <code>GET /api/v1/habilidades/{id}/pokemons</code> – Pokémon por
+                habilidad
+              </li>
+              <li>
+                <code>POST /api/v1/habilidades</code> – Crear habilidad
+                <pre class="mt-2"><code>{
+  "nombre": "impactrueno"
+}</code></pre>
+              </li>
+              <li>
+                <code>PUT /api/v1/habilidades/{id}</code> – Actualizar habilidad
+                <pre class="mt-2"><code>{
+  "nombre": "impactrueno mejorado"
+}</code></pre>
+              </li>
+              <li>
+                <code>DELETE /api/v1/habilidades/{id}</code> – Eliminar
+                habilidad
+              </li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- Sección: Pokémon -->
+      <section id="pokemons" class="mb-5">
+        <h2>4. Pokémon</h2>
+        <div class="card">
+          <div class="card-body">
+            <ul class="list-unstyled mb-0">
+              <li><code>GET /api/v1/pokemons</code> – Todos los Pokémon</li>
+              <li><code>GET /api/v1/pokemons/{id}</code> – Por ID</li>
+              <li>
+                <code>POST /api/v1/pokemons</code> – Crear Pokémon
+                <pre class="mt-2"><code>{
+  "nombre":"Pikachu",
+  "tipo":"eléctrico",
+  "nivel":5,
+  "salud":35,
+  "entrenador":{"id":1},
+  "habilidades":[{"id":1},{"id":2}]
+}</code></pre>
+              </li>
+              <li>
+                <code>PUT /api/v1/pokemons/{id}</code> – Reemplazar Pokémon
+                <pre class="mt-2"><code>{
+  "nombre":"Pikachu",
+  "tipo":"eléctrico",
+  "nivel":6,
+  "salud":40,
+  "entrenador":{"id":2},
+  "habilidades":[{"id":3},{"id":4}]
+}</code></pre>
+              </li>
+              <li>
+                <code>DELETE /api/v1/pokemons/{id}</code> – Eliminar Pokémon
+              </li>
+              <li class="font-weight-bold mt-3">Búsqueda avanzada (v2)</li>
+              <li><code>GET /api/v2/pokemons/buscar?tipo=agua</code></li>
+              <li>
+                <code
+                  >GET /api/v2/pokemons/buscar?nivelMin=10&amp;nivelMax=50</code
+                >
+              </li>
+              <li>
+                <code
+                  >GET /api/v2/pokemons/buscar?sortBy=salud&amp;order=desc</code
+                >
+              </li>
+              <li>
+                <code
+                  >GET
+                  /api/v2/pokemons/buscar?tipo=fuego&amp;nivelMin=5&amp;nivelMax=30&amp;sortBy=nivel&amp;order=asc</code
+                >
+              </li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- Sección: Combates -->
+      <section id="combates" class="mb-5">
+        <h2>5. Combates (API v2)</h2>
+        <div class="card">
+          <div class="card-body">
+            <ul class="list-unstyled mb-0">
+              <li>
+                <code
+                  >POST
+                  /api/v2/combates?playerAId={idA}&amp;playerBId={idB}</code
+                >
+                – Inicia combate bidireccional
+              </li>
+              <li>
+                <code>GET /api/v2/combates/en-curso</code> – Lista combates en
+                curso
+              </li>
+              <li>
+                <code>POST /api/v2/combates/{combateId}/turno</code> – Ejecuta
+                siguiente turno
+              </li>
+              <li>
+                <code>GET /api/v2/combates/{combateId}</code> – Estado actual
+                (saludA, saludB, turnoActual, estado)
+              </li>
+              <li>
+                <code>GET /api/v2/combates/{combateId}/turnos</code> – Histórico
+                de turnos
+              </li>
+              <li>
+                <code
+                  >GET
+                  /api/v2/combates/turnos/por-atacante?atacanteId={pokemonId}</code
+                >
+                – Filtra turnos por atacante
+              </li>
+            </ul>
+          </div>
+        </div>
+      </section>
     </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.bundle.min.js"></script>
   </body>
 </html>
