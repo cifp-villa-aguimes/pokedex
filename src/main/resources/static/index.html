@@ -184,6 +184,37 @@
               – Combinación de filtros y ordenación
             </li>
           </ul>
+
+          <h3>Combates (API v2)</h3>
+          <ul class="list-group mb-4">
+            <li class="list-group-item">
+              <code>POST /api/v2/combates?playerAId={idA}&playerBId={idB}</code>
+              – Inicia un nuevo combate (bidireccional) y devuelve el ID.
+            </li>
+            <li class="list-group-item">
+              <code>GET /api/v2/combates/en-curso</code> – Lista todos los
+              combates que están en curso.
+            </li>
+            <li class="list-group-item">
+              <code>POST /api/v2/combates/{combateId}/turno</code> – Ejecuta el
+              siguiente turno alternando atacante y devuelve el turno ejecutado.
+            </li>
+            <li class="list-group-item">
+              <code>GET /api/v2/combates/{combateId}</code> – Obtiene el estado
+              actual del combate (saludA, saludB, turnoActual, estado).
+            </li>
+            <li class="list-group-item">
+              <code>GET /api/v2/combates/{combateId}/turnos</code> – Lista todos
+              los turnos ejecutados en el combate.
+            </li>
+            <li class="list-group-item">
+              <code
+                >GET
+                /api/v2/combates/turnos/por-atacante?atacanteId={pokemonId}</code
+              >
+              – Filtra y devuelve los turnos donde el Pokémon ataca.
+            </li>
+          </ul>
         </div>
       </div>
     </div>
