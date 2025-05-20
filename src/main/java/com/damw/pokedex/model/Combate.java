@@ -12,18 +12,18 @@ public class Combate {
     private Long id;
 
     @ManyToOne(optional = false)
-    @JoinColumn(name = "player_a_id", nullable = false)
-    private Pokemon playerA;
+    @JoinColumn(name = "pokemon_a_id", nullable = false)
+    private Pokemon pokemonA;
 
-    @Column(name = "salud_player_a", nullable = false)
-    private int saludPlayerA;
+    @Column(name = "salud_pokemon_a", nullable = false)
+    private int saludPokemonA;
 
     @ManyToOne(optional = false)
-    @JoinColumn(name = "player_b_id", nullable = false)
-    private Pokemon playerB;
+    @JoinColumn(name = "pokemon_b_id", nullable = false)
+    private Pokemon pokemonB;
 
-    @Column(name = "salud_player_b", nullable = false)
-    private int saludPlayerB;
+    @Column(name = "salud_pokemon_b", nullable = false)
+    private int saludPokemonB;
 
     @Column(name = "turno_actual", nullable = false)
     private int turnoActual = 0;
@@ -39,12 +39,12 @@ public class Combate {
     public Combate() {
     }
 
-    public Combate(Pokemon playerA, Pokemon playerB) {
-        this.playerA = playerA;
-        this.playerB = playerB;
+    public Combate(Pokemon pokemonA, Pokemon pokemonB) {
+        this.pokemonA = pokemonA;
+        this.pokemonB = pokemonB;
         // Inicializa la salud de combate con la salud real de cada Pokémon
-        this.saludPlayerA = playerA.getSalud();
-        this.saludPlayerB = playerB.getSalud();
+        this.saludPokemonA = pokemonA.getSalud();
+        this.saludPokemonB = pokemonB.getSalud();
     }
 
     // Getters and setters
@@ -52,36 +52,36 @@ public class Combate {
         return id;
     }
 
-    public Pokemon getPlayerA() {
-        return playerA;
+    public Pokemon getPokemonA() {
+        return pokemonA;
     }
 
-    public void setPlayerA(Pokemon playerA) {
-        this.playerA = playerA;
+    public void setPokemonA(Pokemon pokemonA) {
+        this.pokemonA = pokemonA;
     }
 
-    public int getSaludPlayerA() {
-        return saludPlayerA;
+    public int getSaludPokemonA() {
+        return saludPokemonA;
     }
 
-    public void setSaludPlayerA(int saludPlayerA) {
-        this.saludPlayerA = saludPlayerA;
+    public void setSaludPokemonA(int saludPokemonA) {
+        this.saludPokemonA = saludPokemonA;
     }
 
-    public Pokemon getPlayerB() {
-        return playerB;
+    public Pokemon getPokemonB() {
+        return pokemonB;
     }
 
-    public void setPlayerB(Pokemon playerB) {
-        this.playerB = playerB;
+    public void setPokemonB(Pokemon pokemonB) {
+        this.pokemonB = pokemonB;
     }
 
-    public int getSaludPlayerB() {
-        return saludPlayerB;
+    public int getSaludPokemonB() {
+        return saludPokemonB;
     }
 
-    public void setSaludPlayerB(int saludPlayerB) {
-        this.saludPlayerB = saludPlayerB;
+    public void setSaludPokemonB(int saludPokemonB) {
+        this.saludPokemonB = saludPokemonB;
     }
 
     public int getTurnoActual() {

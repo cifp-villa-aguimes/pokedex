@@ -40,11 +40,11 @@ public abstract class AbstractCombatService implements CombatSessionService {
     }
 
     @Override
-    public Long startCombat(Long playerAId, Long playerBId) {
+    public Long startCombat(Long pokemonAId, Long pokemonBId) {
         // Lógica genérica de inicio de combate
-        Pokemon playerA = pokemonRepo.findById(playerAId).orElseThrow();
-        Pokemon playerB = pokemonRepo.findById(playerBId).orElseThrow();
-        Combate combate = new Combate(playerA, playerB);
+        Pokemon pokemonA = pokemonRepo.findById(pokemonAId).orElseThrow();
+        Pokemon pokemonB = pokemonRepo.findById(pokemonBId).orElseThrow();
+        Combate combate = new Combate(pokemonA, pokemonB);
         combateRepo.save(combate);
         return combate.getId();
     }
@@ -64,28 +64,28 @@ public abstract class AbstractCombatService implements CombatSessionService {
         int nextTurn = combate.getTurnoActual() + 1;
         combate.setTurnoActual(nextTurn);
 
-        // Determina atacante/defensor alternando por número de turno (impares playerA,
-        // pares playerB)
-        boolean playerAAtaca = (nextTurn % 2 != 0);
-        Pokemon atacante = playerAAtaca
-                ? combate.getPlayerA()
-                : combate.getPlayerB();
-        Pokemon defensor = playerAAtaca
-                ? combate.getPlayerB()
-                : combate.getPlayerA();
+        // Determina atacante/defensor alternando por número de turno (impares pokemonA,
+        // pares pokemonB)
+        boolean pokemonAAtaca = (nextTurn % 2 != 0);
+        Pokemon atacante = pokemonAAtaca
+                ? combate.getPokemonA()
+                : combate.getPokemonB();
+        Pokemon defensor = pokemonAAtaca
+                ? combate.getPokemonB()
+                : combate.getPokemonA();
 
         // Salud antes del ataque según jugador
-        int saludAntesAtk = playerAAtaca ? combate.getSaludPlayerA() : combate.getSaludPlayerB();
-        int saludAntesDef = playerAAtaca ? combate.getSaludPlayerB() : combate.getSaludPlayerA();
+        int saludAntesAtk = pokemonAAtaca ? combate.getSaludPokemonA() : combate.getSaludPokemonB();
+        int saludAntesDef = pokemonAAtaca ? combate.getSaludPokemonB() : combate.getSaludPokemonA();
 
         // Cálculo y aplicación de daño
         int damage = calculateDamage(atacante, defensor);
         int newDefHealth = Math.max(saludAntesDef - damage, 0);
         // Aplica el daño en la salud de combate, no en la entidad Pokémon
-        if (playerAAtaca) {
-            combate.setSaludPlayerB(newDefHealth);
+        if (pokemonAAtaca) {
+            combate.setSaludPokemonB(newDefHealth);
         } else {
-            combate.setSaludPlayerA(newDefHealth);
+            combate.setSaludPokemonA(newDefHealth);
         }
 
         // Guarda el turno con atacante explícito

@@ -202,14 +202,14 @@ curl "http://localhost:8080/api/v2/pokemons/buscar?tipo=fuego&nivelMin=5&nivelMa
 La Pokedex App incorpora ahora un simulador de combate bidireccional persistido.  
 Estos son los endpoints disponibles para gestionar y probar combates:
 
-| Método | Ruta                                                           | Descripción                                                                     |
-| ------ | -------------------------------------------------------------- | ------------------------------------------------------------------------------- |
-| POST   | `/api/v2/combates?playerAId={pokemonId}&playerBId={pokemonId}` | Inicia un nuevo combate entre los Pokémon A y B. Devuelve `combateId`.          |
-| GET    | `/api/v2/combates/en-curso`                                    | Lista todos los combates que están en curso.                                    |
-| POST   | `/api/v2/combates/{combateId}/turno`                           | Ejecuta el siguiente turno (alternando atacante) y devuelve el turno.           |
-| GET    | `/api/v2/combates/{combateId}`                                 | Obtiene el estado actual del combate (saludPlayerA, saludPlayerB, turnoActual). |
-| GET    | `/api/v2/combates/{combateId}/turnos`                          | Lista todos los turnos ejecutados en el combate.                                |
-| GET    | `/api/v2/combates/turnos/por-atacante?atacanteId={pokemonId}`  | Filtra y devuelve los turnos donde el Pokémon indicado atacó.                   |
+| Método | Ruta                                                             | Descripción                                                                       |
+| ------ | ---------------------------------------------------------------- | --------------------------------------------------------------------------------- |
+| POST   | `/api/v2/combates?pokemonAId={pokemonId}&pokemonBId={pokemonId}` | Inicia un nuevo combate entre los Pokémon A y B. Devuelve `combateId`.            |
+| GET    | `/api/v2/combates/en-curso`                                      | Lista todos los combates que están en curso.                                      |
+| POST   | `/api/v2/combates/{combateId}/turno`                             | Ejecuta el siguiente turno (alternando atacante) y devuelve el turno.             |
+| GET    | `/api/v2/combates/{combateId}`                                   | Obtiene el estado actual del combate (saludPokemonA, saludPokemonB, turnoActual). |
+| GET    | `/api/v2/combates/{combateId}/turnos`                            | Lista todos los turnos ejecutados en el combate.                                  |
+| GET    | `/api/v2/combates/turnos/por-atacante?atacanteId={pokemonId}`    | Filtra y devuelve los turnos donde el Pokémon indicado atacó.                     |
 
 ### 🛠️ Flujo de Pruebas Sugerido
 
@@ -224,7 +224,7 @@ Estos son los endpoints disponibles para gestionar y probar combates:
    ```
 2. **Iniciar un combate**:
    ```bash
-   curl -i -X POST "http://localhost:8080/api/v2/combates?playerAId=9&playerBId=11"
+   curl -i -X POST "http://localhost:8080/api/v2/combates?pokemonAId=9&pokemonBId=11"
    ```
 3. **Listar combates en curso**:
    ```bash
@@ -250,7 +250,7 @@ Estos son los endpoints disponibles para gestionar y probar combates:
 > **Nota:**
 >
 > - Sustituye `{combateId}` por el ID obtenido al iniciar el combate.
-> - Asegúrate de que los `playerAId` y `playerBId` correspondan a Pokémons existentes.
+> - Asegúrate de que los `pokemonAId` y `pokemonBId` correspondan a Pokémons existentes.
 
 ---
 

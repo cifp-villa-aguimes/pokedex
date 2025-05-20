@@ -16,11 +16,11 @@ public interface CombatSessionService {
     /**
      * Inicia un combate entre dos jugadores A y B.
      * 
-     * @param playerAId ID del Pokémon jugador A.
-     * @param playerBId ID del Pokémon jugador B.
+     * @param pokemonAId ID del Pokémon jugador A.
+     * @param pokemonBId ID del Pokémon jugador B.
      * @return ID del combate iniciado.
      */
-    Long startCombat(Long playerAId, Long playerBId);
+    Long startCombat(Long pokemonAId, Long pokemonBId);
 
     /**
      * Ejecuta un turno en el combate indicado, registra el turno y actualiza el

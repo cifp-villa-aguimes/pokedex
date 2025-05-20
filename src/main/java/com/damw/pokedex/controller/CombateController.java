@@ -35,15 +35,15 @@ public class CombateController {
     }
 
     /**
-     * POST /api/v2/combates?playerAId={playerAId}&playerBId={playerBId} →
+     * POST /api/v2/combates?pokemonAId={pokemonId}&pokemonBId={pokemonId} →
      * Inicia un nuevo combate entre dos jugadores identificados como A y B,
      * devolviendo el ID del combate generado.
      */
     @PostMapping
     public ResponseEntity<Long> startCombat(
-            @RequestParam("playerAId") @Positive(message = "playerAId debe ser positivo") Long playerAId,
-            @RequestParam("playerBId") @Positive(message = "playerBId debe ser positivo") Long playerBId) {
-        Long combateId = combatSvc.startCombat(playerAId, playerBId);
+            @RequestParam("pokemonAId") @Positive(message = "pokemonAId debe ser positivo") Long pokemonAId,
+            @RequestParam("pokemonBId") @Positive(message = "pokemonBId debe ser positivo") Long pokemonBId) {
+        Long combateId = combatSvc.startCombat(pokemonAId, pokemonBId);
         return ResponseEntity.status(HttpStatus.CREATED).body(combateId);
     }
 

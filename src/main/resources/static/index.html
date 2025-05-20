@@ -6,16 +6,60 @@
       name="viewport"
       content="width=device-width, initial-scale=1, shrink-to-fit=no"
     />
-    <title>Pokedex API</title>
+    <title>Documentación API Pokedex</title>
     <link
       rel="stylesheet"
-      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
     />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css"
+    />
+    <style>
+      body {
+        padding-top: 70px; /* Para que el contenido no quede debajo de la navbar fija */
+      }
+      pre {
+        background-color: #282c34; /* Fondo oscuro para el código */
+        color: #abb2bf; /* Color del texto del código */
+        padding: 15px;
+        border-radius: 5px;
+        overflow-x: auto; /* Para scroll horizontal en código largo */
+      }
+      code {
+        color: inherit; /* Asegura que el color de texto del código dentro de <pre> sea el del tema */
+      }
+      .card-header h5 {
+        margin-bottom: 0;
+      }
+      .method-badge {
+        display: inline-block;
+        padding: 0.3em 0.6em;
+        margin-right: 8px;
+        border-radius: 0.25rem;
+        font-weight: bold;
+        color: white;
+        text-transform: uppercase;
+        font-size: 0.75em;
+        vertical-align: middle;
+      }
+      .method-get {
+        background-color: #61affe; /* Azul */
+      }
+      .method-post {
+        background-color: #49cc90; /* Verde */
+      }
+      .method-put {
+        background-color: #fca130; /* Naranja */
+      }
+      .method-delete {
+        background-color: #f93e3e; /* Rojo */
+      }
+    </style>
   </head>
-  <body>
-    <!-- Navbar de secciones -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-light mb-4">
-      <a class="navbar-brand" href="#">Pokedex API</a>
+  <body data-spy="scroll" data-target="#navbarNav" data-offset="80">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+      <a class="navbar-brand" href="#">Pokedex API Docs</a>
       <button
         class="navbar-toggler"
         type="button"
@@ -28,9 +72,18 @@
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav">
+        <ul class="navbar-nav ml-auto">
           <li class="nav-item">
-            <a class="nav-link" href="#orden">Orden de uso</a>
+            <a class="nav-link" href="#introduccion">Introducción</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#autenticacion">Autenticación</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#modelos-datos">Modelos de Datos</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#orden">Orden de Uso</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="#entrenadores">Entrenadores</a>
@@ -44,122 +97,592 @@
           <li class="nav-item">
             <a class="nav-link" href="#combates">Combates</a>
           </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#codigos-estado">Códigos de Estado</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#errores">Errores</a>
+          </li>
         </ul>
       </div>
     </nav>
 
-    <div class="container">
-      <!-- Sección: Orden de Uso -->
+    <div class="container mt-4">
+      <section id="introduccion" class="mb-5">
+        <h1 class="mb-4">Bienvenido a la Documentación de la API Pokedex</h1>
+        <p>
+          Esta API te permite gestionar y simular el emocionante mundo de
+          Pokémon. Podrás crear entrenadores, habilidades, Pokémon y hasta
+          simular combates épicos. Utiliza esta documentación para entender cómo
+          interactuar con nuestros diferentes recursos.
+        </p>
+        <p>
+          La API está dividida en dos versiones principales,
+          <strong>v1</strong> para operaciones CRUD básicas y
+          <strong>v2</strong> para funcionalidades avanzadas como búsquedas
+          filtradas y simulación de combates.
+        </p>
+      </section>
+
+      <section id="autenticacion" class="mb-5">
+        <h2>1. Autenticación</h2>
+        <p>
+          Actualmente, esta API no requiere autenticación para la mayoría de sus
+          endpoints. Sin embargo, para ciertas operaciones de escritura o acceso
+          a recursos sensibles (futuras implementaciones), se podría requerir
+          una clave API.
+        </p>
+        <div class="alert alert-info">
+          <strong>Nota:</strong> Si en el futuro se implementa autenticación, se
+          especificará cómo obtener y usar su token (por ejemplo, mediante una
+          cabecera <code>Authorization: Bearer YOUR_TOKEN</code>).
+        </div>
+      </section>
+
+      <section id="modelos-datos" class="mb-5">
+        <h2>2. Modelos de Datos</h2>
+        <p>
+          Entender la estructura de los datos es fundamental para interactuar
+          correctamente con la API. Aquí se describen los modelos JSON esperados
+          tanto para peticiones como para respuestas.
+        </p>
+
+        <div class="card mb-3">
+          <div class="card-header">
+            <h5 class="mb-0">Entrenador</h5>
+          </div>
+          <div class="card-body">
+            <p>Representa a un entrenador Pokémon.</p>
+            <h6>Estructura:</h6>
+            <pre><code class="language-json">{
+  "id": "integer",      // ID único del entrenador (solo lectura, generado por el servidor)
+  "nombre": "string"    // Nombre del entrenador. Obligatorio.
+}</code></pre>
+            <p><strong>Ejemplo:</strong></p>
+            <pre><code class="language-json">{
+  "id": 1,
+  "nombre": "Ash Ketchum"
+}</code></pre>
+          </div>
+        </div>
+
+        <div class="card mb-3">
+          <div class="card-header">
+            <h5 class="mb-0">Habilidad</h5>
+          </div>
+          <div class="card-body">
+            <p>Representa una habilidad que un Pokémon puede tener.</p>
+            <h6>Estructura:</h6>
+            <pre><code class="language-json">{
+  "id": "integer",      // ID único de la habilidad (solo lectura, generado por el servidor)
+  "nombre": "string"    // Nombre de la habilidad (ej. "Impactrueno"). Obligatorio.
+}</code></pre>
+            <p><strong>Ejemplo:</strong></p>
+            <pre><code class="language-json">{
+  "id": 1,
+  "nombre": "Cola Férrea"
+}</code></pre>
+          </div>
+        </div>
+
+        <div class="card mb-3">
+          <div class="card-header">
+            <h5 class="mb-0">Pokémon</h5>
+          </div>
+          <div class="card-body">
+            <p>Representa un Pokémon en el sistema.</p>
+            <h6>Estructura:</h6>
+            <pre><code class="language-json">{
+  "id": "integer",      // ID único del Pokémon (solo lectura, generado por el servidor)
+  "nombre": "string",    // Nombre del Pokémon. Obligatorio.
+  "tipo": "string",      // Tipo elemental del Pokémon (ej. "eléctrico", "agua"). Obligatorio.
+  "nivel": "integer",    // Nivel del Pokémon. Obligatorio.
+  "salud": "integer",    // Puntos de salud actuales del Pokémon. Obligatorio.
+  "entrenador": {
+    "id": "integer"      // ID del entrenador al que pertenece el Pokémon. Obligatorio para POST/PUT.
+  },
+  "habilidades": [       // Array de objetos de habilidad. Opcional.
+    {
+      "id": "integer"    // ID de una habilidad existente.
+    }
+  ]
+}</code></pre>
+            <p><strong>Ejemplo:</strong></p>
+            <pre><code class="language-json">{
+  "id": 1,
+  "nombre": "Pikachu",
+  "tipo": "eléctrico",
+  "nivel": 10,
+  "salud": 45,
+  "entrenador": {
+    "id": 1
+  },
+  "habilidades": [
+    { "id": 1 },
+    { "id": 2 }
+  ]
+}</code></pre>
+          </div>
+        </div>
+      </section>
+
       <section id="orden" class="mb-5">
-        <h2>1. Orden de uso de la API</h2>
+        <h2>3. Orden de Uso de la API</h2>
+        <p>
+          Para una experiencia óptima y para asegurar la integridad de los
+          datos, sigue el siguiente orden de operaciones:
+        </p>
         <ol>
-          <li>Crear <strong>Entrenador</strong></li>
-          <li>Crear <strong>Habilidad</strong></li>
+          <li>Crear un <strong>Entrenador</strong>.</li>
           <li>
-            Crear <strong>Pokémon</strong> asignándolo a un entrenador y
-            habilidad
+            Crear <strong>Habilidades</strong> que tus Pokémon puedan usar.
           </li>
-          <li>Consultar recursos (Entrenador, Habilidad, Pokémon)</li>
           <li>
-            Simular <strong>Combate</strong> (API v2): iniciar combate, ejecutar
-            turnos y consultar resultados
+            Crear <strong>Pokémon</strong>, asignándolos a un entrenador
+            existente y sus habilidades.
+          </li>
+          <li>
+            Consultar los diferentes recursos (Entrenador, Habilidad, Pokémon).
+          </li>
+          <li>
+            Simular <strong>Combates</strong> (API v2): iniciar un combate entre
+            dos Pokémon, ejecutar turnos y consultar los resultados.
           </li>
         </ol>
       </section>
 
-      <!-- Sección: Entrenadores -->
       <section id="entrenadores" class="mb-5">
-        <h2>2. Entrenadores</h2>
-        <div class="card">
+        <h2>4. Entrenadores</h2>
+        <p>Gestiona la información de los entrenadores Pokémon.</p>
+
+        <div class="card mb-3">
+          <div class="card-header">
+            <span class="method-badge method-get">GET</span>
+            <h5 class="d-inline-block">/api/v1/entrenadores</h5>
+          </div>
           <div class="card-body">
-            <ul class="list-unstyled mb-0">
-              <li>
-                <code>GET /api/v1/entrenadores</code> – Obtener todos los
-                entrenadores
-              </li>
-              <li>
-                <code>GET /api/v1/entrenadores/{id}</code> – Obtener entrenador
-                por ID
-              </li>
-              <li>
-                <code>GET /api/v1/entrenadores/{id}/pokemons</code> – Obtener
-                Pokémon de un entrenador
-              </li>
-              <li>
-                <code>POST /api/v1/entrenadores</code> – Crear entrenador
-                <pre class="mt-2"><code>{
+            <p>Obtiene una lista de todos los entrenadores registrados.</p>
+            <h6>Ejemplo de Respuesta (200 OK):</h6>
+            <pre><code class="language-json">[
+  {
+    "id": 1,
+    "nombre": "Ash Ketchum"
+  },
+  {
+    "id": 2,
+    "nombre": "Misty"
+  }
+]</code></pre>
+          </div>
+        </div>
+
+        <div class="card mb-3">
+          <div class="card-header">
+            <span class="method-badge method-get">GET</span>
+            <h5 class="d-inline-block">/api/v1/entrenadores/{id}</h5>
+          </div>
+          <div class="card-body">
+            <p>Obtiene un entrenador específico por su ID.</p>
+            <h6>Parámetros de Ruta:</h6>
+            <ul>
+              <li><code>id</code> (integer): ID del entrenador.</li>
+            </ul>
+            <h6>Ejemplo de Petición:</h6>
+            <pre><code class="language-bash">curl -X GET "http://localhost:8080/api/v1/entrenadores/1"</code></pre>
+            <h6>Ejemplo de Respuesta (200 OK):</h6>
+            <pre><code class="language-json">{
+  "id": 1,
   "nombre": "Ash Ketchum"
 }</code></pre>
-              </li>
+          </div>
+        </div>
+
+        <div class="card mb-3">
+          <div class="card-header">
+            <span class="method-badge method-get">GET</span>
+            <h5 class="d-inline-block">/api/v1/entrenadores/{id}/pokemons</h5>
+          </div>
+          <div class="card-body">
+            <p>
+              Obtiene todos los Pokémon asociados a un entrenador específico por
+              su ID.
+            </p>
+            <h6>Parámetros de Ruta:</h6>
+            <ul>
+              <li><code>id</code> (integer): ID del entrenador.</li>
+            </ul>
+            <h6>Ejemplo de Petición:</h6>
+            <pre><code class="language-bash">curl -X GET "http://localhost:8080/api/v1/entrenadores/1/pokemons"</code></pre>
+            <h6>Ejemplo de Respuesta (200 OK):</h6>
+            <pre><code class="language-json">[
+  {
+    "id": 1,
+    "nombre": "Pikachu",
+    "tipo": "eléctrico",
+    "nivel": 10,
+    "salud": 45,
+    "entrenador": { "id": 1, "nombre": "Ash Ketchum" },
+    "habilidades": [{ "id": 1, "nombre": "Impactrueno" }]
+  },
+  {
+    "id": 2,
+    "nombre": "Bulbasaur",
+    "tipo": "planta",
+    "nivel": 8,
+    "salud": 40,
+    "entrenador": { "id": 1, "nombre": "Ash Ketchum" },
+    "habilidades": [{ "id": 3, "nombre": "Látigo Cepa" }]
+  }
+]</code></pre>
+            <h6>
+              Ejemplo de Respuesta (404 Not Found si el entrenador no existe):
+            </h6>
+            <pre><code class="language-json">{
+  "timestamp": "2025-04-27T10:30:00Z",
+  "status": 404,
+  "error": "Not Found",
+  "message": "Entrenador no encontrado con id 999",
+  "path": "/api/v1/entrenadores/999/pokemons"
+}</code></pre>
+          </div>
+        </div>
+
+        <div class="card mb-3">
+          <div class="card-header">
+            <span class="method-badge method-post">POST</span>
+            <h5 class="d-inline-block">/api/v1/entrenadores</h5>
+          </div>
+          <div class="card-body">
+            <p>Crea un nuevo entrenador.</p>
+            <h6>Cuerpo de la Petición:</h6>
+            <pre><code class="language-json">{
+  "nombre": "Ash Ketchum"
+}</code></pre>
+            <h6>Ejemplo de Petición:</h6>
+            <pre><code class="language-bash">curl -X POST -H "Content-Type: application/json" -d '{
+  "nombre": "Ash Ketchum"
+}' "http://localhost:8080/api/v1/entrenadores"</code></pre>
+            <h6>Ejemplo de Respuesta (201 Created):</h6>
+            <pre><code class="language-json">{
+  "id": 1,
+  "nombre": "Ash Ketchum"
+}</code></pre>
+          </div>
+        </div>
+
+        <div class="card mb-3">
+          <div class="card-header">
+            <span class="method-badge method-put">PUT</span>
+            <h5 class="d-inline-block">/api/v1/entrenadores/{id}</h5>
+          </div>
+          <div class="card-body">
+            <p>
+              Actualiza completamente un entrenador existente por su ID.
+              **Nota:** Esta operación podría sobrescribir la lista de Pokémon
+              si no se maneja correctamente en el cliente.
+            </p>
+            <h6>Parámetros de Ruta:</h6>
+            <ul>
               <li>
-                <code>PUT /api/v1/entrenadores/{id}</code> – Actualizar
-                entrenador
-                <pre class="mt-2"><code>{
+                <code>id</code> (integer): ID del entrenador a actualizar.
+              </li>
+            </ul>
+            <h6>Cuerpo de la Petición:</h6>
+            <pre><code class="language-json">{
   "nombre": "Ash Ketchum Updated"
 }</code></pre>
-              </li>
-              <li>
-                <code>PUT /api/v1/entrenadores/{id}/preserve</code> – Actualiza
-                solo el nombre, preservando Pokémon
-                <pre class="mt-2"><code>{
-  "nombre": "Ash Ketchum"
+            <h6>Ejemplo de Petición:</h6>
+            <pre><code class="language-bash">curl -X PUT -H "Content-Type: application/json" -d '{
+  "nombre": "Ash Ketchum Updated"
+}' "http://localhost:8080/api/v1/entrenadores/1"</code></pre>
+            <h6>Ejemplo de Respuesta (200 OK):</h6>
+            <pre><code class="language-json">{
+  "id": 1,
+  "nombre": "Ash Ketchum Updated"
 }</code></pre>
-              </li>
+          </div>
+        </div>
+
+        <div class="card mb-3">
+          <div class="card-header">
+            <span class="method-badge method-put">PUT</span>
+            <h5 class="d-inline-block">/api/v1/entrenadores/{id}/preserve</h5>
+          </div>
+          <div class="card-body">
+            <p>
+              Actualiza únicamente el nombre del Entrenador, conservando su
+              lista de Pokémon asociada. Esta es una alternativa segura a
+              <code>PUT /api/v1/entrenadores/{id}</code> para actualizar solo el
+              nombre.
+            </p>
+            <h6>Parámetros de Ruta:</h6>
+            <ul>
               <li>
-                <code>DELETE /api/v1/entrenadores/{id}</code> – Eliminar
-                entrenador
+                <code>id</code> (integer): ID del entrenador a actualizar.
               </li>
             </ul>
+            <h6>Cuerpo de la Petición:</h6>
+            <pre><code class="language-json">{
+  "nombre": "Ash Ketchum Renombrado"
+}</code></pre>
+            <h6>Ejemplo de Petición:</h6>
+            <pre><code class="language-bash">curl -X PUT -H "Content-Type: application/json" -d '{
+  "nombre": "Ash Ketchum Renombrado"
+}' "http://localhost:8080/api/v1/entrenadores/1/preserve"</code></pre>
+            <h6>Ejemplo de Respuesta (200 OK):</h6>
+            <pre><code class="language-json">{
+  "id": 1,
+  "nombre": "Ash Ketchum Renombrado"
+}</code></pre>
+          </div>
+        </div>
+
+        <div class="card mb-3">
+          <div class="card-header">
+            <span class="method-badge method-delete">DELETE</span>
+            <h5 class="d-inline-block">/api/v1/entrenadores/{id}</h5>
+          </div>
+          <div class="card-body">
+            <p>Elimina un entrenador por su ID.</p>
+            <h6>Parámetros de Ruta:</h6>
+            <ul>
+              <li><code>id</code> (integer): ID del entrenador a eliminar.</li>
+            </ul>
+            <h6>Ejemplo de Petición:</h6>
+            <pre><code class="language-bash">curl -X DELETE "http://localhost:8080/api/v1/entrenadores/1"</code></pre>
+            <h6>Ejemplo de Respuesta (204 No Content):</h6>
+            <p>
+              No se devuelve contenido en el cuerpo de la respuesta tras una
+              eliminación exitosa.
+            </p>
           </div>
         </div>
       </section>
 
-      <!-- Sección: Habilidades -->
       <section id="habilidades" class="mb-5">
-        <h2>3. Habilidades</h2>
-        <div class="card">
+        <h2>5. Habilidades</h2>
+        <p>Administra las habilidades que los Pokémon pueden aprender.</p>
+
+        <div class="card mb-3">
+          <div class="card-header">
+            <span class="method-badge method-get">GET</span>
+            <h5 class="d-inline-block">/api/v1/habilidades</h5>
+          </div>
           <div class="card-body">
-            <ul class="list-unstyled mb-0">
-              <li><code>GET /api/v1/habilidades</code> – Obtener todas</li>
-              <li>
-                <code>GET /api/v1/habilidades/{id}</code> – Obtener por ID
-              </li>
-              <li>
-                <code>GET /api/v1/habilidades/{id}/pokemons</code> – Pokémon por
-                habilidad
-              </li>
-              <li>
-                <code>POST /api/v1/habilidades</code> – Crear habilidad
-                <pre class="mt-2"><code>{
+            <p>Obtiene todas las habilidades disponibles.</p>
+            <h6>Ejemplo de Respuesta (200 OK):</h6>
+            <pre><code class="language-json">[
+  {
+    "id": 1,
+    "nombre": "Impactrueno"
+  },
+  {
+    "id": 2,
+    "nombre": "Ascuas"
+  }
+]</code></pre>
+          </div>
+        </div>
+
+        <div class="card mb-3">
+          <div class="card-header">
+            <span class="method-badge method-get">GET</span>
+            <h5 class="d-inline-block">/api/v1/habilidades/{id}</h5>
+          </div>
+          <div class="card-body">
+            <p>Obtiene una habilidad específica por su ID.</p>
+            <h6>Parámetros de Ruta:</h6>
+            <ul>
+              <li><code>id</code> (integer): ID de la habilidad.</li>
+            </ul>
+            <h6>Ejemplo de Petición:</h6>
+            <pre><code class="language-bash">curl -X GET "http://localhost:8080/api/v1/habilidades/1"</code></pre>
+            <h6>Ejemplo de Respuesta (200 OK):</h6>
+            <pre><code class="language-json">{
+  "id": 1,
+  "nombre": "Impactrueno"
+}</code></pre>
+          </div>
+        </div>
+
+        <div class="card mb-3">
+          <div class="card-header">
+            <span class="method-badge method-get">GET</span>
+            <h5 class="d-inline-block">/api/v1/habilidades/{id}/pokemons</h5>
+          </div>
+          <div class="card-body">
+            <p>
+              Obtiene todos los Pokémon que poseen una habilidad específica por
+              su ID.
+            </p>
+            <h6>Parámetros de Ruta:</h6>
+            <ul>
+              <li><code>id</code> (integer): ID de la habilidad.</li>
+            </ul>
+            <h6>Ejemplo de Petición:</h6>
+            <pre><code class="language-bash">curl -X GET "http://localhost:8080/api/v1/habilidades/1/pokemons"</code></pre>
+            <h6>Ejemplo de Respuesta (200 OK):</h6>
+            <pre><code class="language-json">[
+  {
+    "id": 1,
+    "nombre": "Pikachu",
+    "tipo": "eléctrico",
+    "nivel": 10,
+    "salud": 45,
+    "entrenador": { "id": 1, "nombre": "Ash Ketchum" },
+    "habilidades": [{ "id": 1, "nombre": "Impactrueno" }]
+  }
+]</code></pre>
+            <h6>
+              Ejemplo de Respuesta (404 Not Found si la habilidad no existe):
+            </h6>
+            <pre><code class="language-json">{
+  "timestamp": "2025-04-27T10:30:00Z",
+  "status": 404,
+  "error": "Not Found",
+  "message": "Habilidad no encontrada con id 999",
+  "path": "/api/v1/habilidades/999/pokemons"
+}</code></pre>
+          </div>
+        </div>
+
+        <div class="card mb-3">
+          <div class="card-header">
+            <span class="method-badge method-post">POST</span>
+            <h5 class="d-inline-block">/api/v1/habilidades</h5>
+          </div>
+          <div class="card-body">
+            <p>Crea una nueva habilidad.</p>
+            <h6>Cuerpo de la Petición:</h6>
+            <pre><code class="language-json">{
   "nombre": "impactrueno"
 }</code></pre>
-              </li>
-              <li>
-                <code>PUT /api/v1/habilidades/{id}</code> – Actualizar habilidad
-                <pre class="mt-2"><code>{
-  "nombre": "impactrueno mejorado"
+            <h6>Ejemplo de Petición:</h6>
+            <pre><code class="language-bash">curl -X POST -H "Content-Type: application/json" -d '{
+  "nombre": "placaje"
+}' "http://localhost:8080/api/v1/habilidades"</code></pre>
+            <h6>Ejemplo de Respuesta (201 Created):</h6>
+            <pre><code class="language-json">{
+  "id": 3,
+  "nombre": "placaje"
 }</code></pre>
-              </li>
+          </div>
+        </div>
+
+        <div class="card mb-3">
+          <div class="card-header">
+            <span class="method-badge method-put">PUT</span>
+            <h5 class="d-inline-block">/api/v1/habilidades/{id}</h5>
+          </div>
+          <div class="card-body">
+            <p>Actualiza una habilidad existente por su ID.</p>
+            <h6>Parámetros de Ruta:</h6>
+            <ul>
               <li>
-                <code>DELETE /api/v1/habilidades/{id}</code> – Eliminar
-                habilidad
+                <code>id</code> (integer): ID de la habilidad a actualizar.
               </li>
             </ul>
+            <h6>Cuerpo de la Petición:</h6>
+            <pre><code class="language-json">{
+  "nombre": "impactrueno mejorado"
+}</code></pre>
+            <h6>Ejemplo de Petición:</h6>
+            <pre><code class="language-bash">curl -X PUT -H "Content-Type: application/json" -d '{
+  "nombre": "impactrueno mejorado"
+}' "http://localhost:8080/api/v1/habilidades/1"</code></pre>
+            <h6>Ejemplo de Respuesta (200 OK):</h6>
+            <pre><code class="language-json">{
+  "id": 1,
+  "nombre": "impactrueno mejorado"
+}</code></pre>
+          </div>
+        </div>
+
+        <div class="card mb-3">
+          <div class="card-header">
+            <span class="method-badge method-delete">DELETE</span>
+            <h5 class="d-inline-block">/api/v1/habilidades/{id}</h5>
+          </div>
+          <div class="card-body">
+            <p>Elimina una habilidad por su ID.</p>
+            <h6>Parámetros de Ruta:</h6>
+            <ul>
+              <li><code>id</code> (integer): ID de la habilidad a eliminar.</li>
+            </ul>
+            <h6>Ejemplo de Petición:</h6>
+            <pre><code class="language-bash">curl -X DELETE "http://localhost:8080/api/v1/habilidades/1"</code></pre>
+            <h6>Ejemplo de Respuesta (204 No Content):</h6>
+            <p>
+              No se devuelve contenido en el cuerpo de la respuesta tras una
+              eliminación exitosa.
+            </p>
           </div>
         </div>
       </section>
 
-      <!-- Sección: Pokémon -->
       <section id="pokemons" class="mb-5">
-        <h2>4. Pokémon</h2>
-        <div class="card">
+        <h2>6. Pokémon</h2>
+        <p>Gestión y búsqueda de Pokémon.</p>
+
+        <div class="card mb-3">
+          <div class="card-header">
+            <span class="method-badge method-get">GET</span>
+            <h5 class="d-inline-block">/api/v1/pokemons</h5>
+          </div>
           <div class="card-body">
-            <ul class="list-unstyled mb-0">
-              <li><code>GET /api/v1/pokemons</code> – Todos los Pokémon</li>
-              <li><code>GET /api/v1/pokemons/{id}</code> – Por ID</li>
-              <li>
-                <code>POST /api/v1/pokemons</code> – Crear Pokémon
-                <pre class="mt-2"><code>{
+            <p>Obtiene una lista de todos los Pokémon registrados.</p>
+            <h6>Ejemplo de Respuesta (200 OK):</h6>
+            <pre><code class="language-json">[
+  {
+    "id": 1,
+    "nombre": "Pikachu",
+    "tipo": "eléctrico",
+    "nivel": 5,
+    "salud": 35,
+    "entrenador": { "id": 1, "nombre": "Ash" },
+    "habilidades": [{ "id": 1, "nombre": "Impactrueno" }]
+  }
+]</code></pre>
+          </div>
+        </div>
+
+        <div class="card mb-3">
+          <div class="card-header">
+            <span class="method-badge method-get">GET</span>
+            <h5 class="d-inline-block">/api/v1/pokemons/{id}</h5>
+          </div>
+          <div class="card-body">
+            <p>Obtiene un Pokémon específico por su ID.</p>
+            <h6>Parámetros de Ruta:</h6>
+            <ul>
+              <li><code>id</code> (integer): ID del Pokémon.</li>
+            </ul>
+            <h6>Ejemplo de Petición:</h6>
+            <pre><code class="language-bash">curl -X GET "http://localhost:8080/api/v1/pokemons/1"</code></pre>
+            <h6>Ejemplo de Respuesta (200 OK):</h6>
+            <pre><code class="language-json">{
+  "id": 1,
+  "nombre": "Pikachu",
+  "tipo": "eléctrico",
+  "nivel": 5,
+  "salud": 35,
+  "entrenador": { "id": 1, "nombre": "Ash" },
+  "habilidades": [{ "id": 1, "nombre": "Impactrueno" }]
+}</code></pre>
+          </div>
+        </div>
+
+        <div class="card mb-3">
+          <div class="card-header">
+            <span class="method-badge method-post">POST</span>
+            <h5 class="d-inline-block">/api/v1/pokemons</h5>
+          </div>
+          <div class="card-body">
+            <p>
+              Crea un nuevo Pokémon y lo asocia a un entrenador y habilidades.
+            </p>
+            <h6>Cuerpo de la Petición:</h6>
+            <pre><code class="language-json">{
   "nombre":"Pikachu",
   "tipo":"eléctrico",
   "nivel":5,
@@ -167,10 +690,41 @@
   "entrenador":{"id":1},
   "habilidades":[{"id":1},{"id":2}]
 }</code></pre>
-              </li>
-              <li>
-                <code>PUT /api/v1/pokemons/{id}</code> – Reemplazar Pokémon
-                <pre class="mt-2"><code>{
+            <h6>Ejemplo de Petición:</h6>
+            <pre><code class="language-bash">curl -X POST -H "Content-Type: application/json" -d '{
+  "nombre":"Charmander",
+  "tipo":"fuego",
+  "nivel":7,
+  "salud":40,
+  "entrenador":{"id":2},
+  "habilidades":[{"id":4}]
+}' "http://localhost:8080/api/v1/pokemons"</code></pre>
+            <h6>Ejemplo de Respuesta (201 Created):</h6>
+            <pre><code class="language-json">{
+  "id": 2,
+  "nombre": "Charmander",
+  "tipo": "fuego",
+  "nivel": 7,
+  "salud": 40,
+  "entrenador": { "id": 2, "nombre": "Misty" },
+  "habilidades": [{ "id": 4, "nombre": "Ascuas" }]
+}</code></pre>
+          </div>
+        </div>
+
+        <div class="card mb-3">
+          <div class="card-header">
+            <span class="method-badge method-put">PUT</span>
+            <h5 class="d-inline-block">/api/v1/pokemons/{id}</h5>
+          </div>
+          <div class="card-body">
+            <p>Reemplaza completamente un Pokémon existente por su ID.</p>
+            <h6>Parámetros de Ruta:</h6>
+            <ul>
+              <li><code>id</code> (integer): ID del Pokémon a reemplazar.</li>
+            </ul>
+            <h6>Cuerpo de la Petición:</h6>
+            <pre><code class="language-json">{
   "nombre":"Pikachu",
   "tipo":"eléctrico",
   "nivel":6,
@@ -178,76 +732,475 @@
   "entrenador":{"id":2},
   "habilidades":[{"id":3},{"id":4}]
 }</code></pre>
+            <h6>Ejemplo de Petición:</h6>
+            <pre><code class="language-bash">curl -X PUT -H "Content-Type: application/json" -d '{
+  "nombre":"Pikachu",
+  "tipo":"eléctrico",
+  "nivel":6,
+  "salud":40,
+  "entrenador":{"id":2},
+  "habilidades":[{"id":3},{"id":4}]
+}' "http://localhost:8080/api/v1/pokemons/1"</code></pre>
+            <h6>Ejemplo de Respuesta (200 OK):</h6>
+            <pre><code class="language-json">{
+  "id": 1,
+  "nombre": "Pikachu",
+  "tipo": "eléctrico",
+  "nivel": 6,
+  "salud": 40,
+  "entrenador": { "id": 2, "nombre": "Misty" },
+  "habilidades": [{ "id": 3, "nombre": "Placaje" }, { "id": 4, "nombre": "Ascuas" }]
+}</code></pre>
+          </div>
+        </div>
+
+        <div class="card mb-3">
+          <div class="card-header">
+            <span class="method-badge method-delete">DELETE</span>
+            <h5 class="d-inline-block">/api/v1/pokemons/{id}</h5>
+          </div>
+          <div class="card-body">
+            <p>Elimina un Pokémon por su ID.</p>
+            <h6>Parámetros de Ruta:</h6>
+            <ul>
+              <li><code>id</code> (integer): ID del Pokémon a eliminar.</li>
+            </ul>
+            <h6>Ejemplo de Petición:</h6>
+            <pre><code class="language-bash">curl -X DELETE "http://localhost:8080/api/v1/pokemons/1"</code></pre>
+            <h6>Ejemplo de Respuesta (204 No Content):</h6>
+            <p>
+              No se devuelve contenido en el cuerpo de la respuesta tras una
+              eliminación exitosa.
+            </p>
+          </div>
+        </div>
+
+        <h5 class="mt-4">Búsqueda Avanzada de Pokémon (API v2)</h5>
+        <p>Permite filtrar y ordenar Pokémon usando diversos criterios.</p>
+        <div class="card mb-3">
+          <div class="card-header">
+            <span class="method-badge method-get">GET</span>
+            <h5 class="d-inline-block">/api/v2/pokemons/buscar</h5>
+          </div>
+          <div class="card-body">
+            <h6>Parámetros de Consulta (Query Parameters):</h6>
+            <ul>
+              <li>
+                <code>tipo</code> (string, opcional): Filtra Pokémon por su tipo
+                elemental (ej. <code>agua</code>, <code>fuego</code>).
               </li>
               <li>
-                <code>DELETE /api/v1/pokemons/{id}</code> – Eliminar Pokémon
-              </li>
-              <li class="font-weight-bold mt-3">Búsqueda avanzada (v2)</li>
-              <li><code>GET /api/v2/pokemons/buscar?tipo=agua</code></li>
-              <li>
-                <code
-                  >GET /api/v2/pokemons/buscar?nivelMin=10&amp;nivelMax=50</code
-                >
+                <code>nivelMin</code> (integer, opcional): Nivel mínimo de los
+                Pokémon a buscar.
               </li>
               <li>
-                <code
-                  >GET /api/v2/pokemons/buscar?sortBy=salud&amp;order=desc</code
-                >
+                <code>nivelMax</code> (integer, opcional): Nivel máximo de los
+                Pokémon a buscar.
               </li>
               <li>
-                <code
-                  >GET
-                  /api/v2/pokemons/buscar?tipo=fuego&amp;nivelMin=5&amp;nivelMax=30&amp;sortBy=nivel&amp;order=asc</code
-                >
+                <code>sortBy</code> (string, opcional): Campo por el que ordenar
+                los resultados (ej. <code>salud</code>, <code>nivel</code>,
+                <code>nombre</code>).
               </li>
+              <li>
+                <code>order</code> (string, opcional): Dirección de ordenación
+                (<code>asc</code> para ascendente, <code>desc</code> para
+                descendente). Por defecto: <code>asc</code>.
+              </li>
+            </ul>
+            <h6>Ejemplos de Petición:</h6>
+            <ul>
+              <li>
+                <pre><code class="language-bash">curl -X GET "http://localhost:8080/api/v2/pokemons/buscar?tipo=agua"</code></pre>
+              </li>
+              <li>
+                <pre><code class="language-bash">curl -X GET "http://localhost:8080/api/v2/pokemons/buscar?nivelMin=10&nivelMax=50"</code></pre>
+              </li>
+              <li>
+                <pre><code class="language-bash">curl -X GET "http://localhost:8080/api/v2/pokemons/buscar?sortBy=salud&order=desc"</code></pre>
+              </li>
+              <li>
+                <pre><code class="language-bash">curl -X GET "http://localhost:8080/api/v2/pokemons/buscar?tipo=fuego&nivelMin=5&nivelMax=30&sortBy=nivel&order=asc"</code></pre>
+              </li>
+            </ul>
+            <h6>Ejemplo de Respuesta (200 OK - Filtrado por tipo=agua):</h6>
+            <pre><code class="language-json">[
+  {
+    "id": 3,
+    "nombre": "Squirtle",
+    "tipo": "agua",
+    "nivel": 8,
+    "salud": 42,
+    "entrenador": { "id": 2, "nombre": "Misty" },
+    "habilidades": [{ "id": 5, "nombre": "Chorro Agua" }]
+  }
+]</code></pre>
+          </div>
+        </div>
+      </section>
+
+      <section id="combates" class="mb-5">
+        <h2>7. Combates (API v2)</h2>
+        <p>
+          Simula combates Pokémon bidireccionales. Un combate requiere dos
+          Pokémon para empezar.
+        </p>
+
+        <div class="card mb-3">
+          <div class="card-header">
+            <span class="method-badge method-post">POST</span>
+            <h5 class="d-inline-block">
+              /api/v2/combates?pokemonAId={pokemonId}&pokemonBId={pokemonId}
+            </h5>
+          </div>
+          <div class="card-body">
+            <p>Inicia un nuevo combate entre dos Pokémon.</p>
+            <h6>Parámetros de Consulta:</h6>
+            <ul>
+              <li>
+                <code>pokemonAId</code> (integer, obligatorio): ID del Pokémon
+                del Jugador A.
+              </li>
+              <li>
+                <code>pokemonBId</code> (integer, obligatorio): ID del Pokémon
+                del Jugador B.
+              </li>
+            </ul>
+            <h6>Ejemplo de Petición:</h6>
+            <pre><code class="language-bash">curl -X POST "http://localhost:8080/api/v2/combates?pokemonAId=1&pokemonBId=2"</code></pre>
+            <h6>Ejemplo de Respuesta (201 Created):</h6>
+            <pre><code class="language-json">{
+  "id": "1"
+}</code></pre>
+          </div>
+        </div>
+
+        <div class="card mb-3">
+          <div class="card-header">
+            <span class="method-badge method-get">GET</span>
+            <h5 class="d-inline-block">/api/v2/combates/en-curso</h5>
+          </div>
+          <div class="card-body">
+            <p>Lista todos los combates que actualmente están en curso.</p>
+            <h6>Ejemplo de Petición:</h6>
+            <pre><code class="language-bash">curl -X GET "http://localhost:8080/api/v2/combates/en-curso"</code></pre>
+            <h6>Códigos de Estado:</h6>
+            <ul>
+                <li><code>200 OK</code>: Lista de combates en curso devuelta.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="card mb-3">
+          <div class="card-header">
+            <span class="method-badge method-post">POST</span>
+            <h5 class="d-inline-block">/api/v2/combates/{combateId}/turno</h5>
+          </div>
+          <div class="card-body">
+            <p>Ejecuta el siguiente turno del combate indicado.</p>
+            <h6>Parámetros de Ruta:</h6>
+            <ul>
+              <li><code>combateId</code> (string): ID del combate en curso.</li>
+            </ul>
+            <h6>Ejemplo de Petición:</h6>
+            <pre><code class="language-bash">curl -X POST "http://localhost:8080/api/v2/combates/1/turno"</code></pre>
+            <h6>Ejemplo de Respuesta (200 OK):</h6>
+            <pre><code class="language-json">{
+"id": 4,
+"combate": {
+    "id": 1,
+    "pokemonA": {
+        "id": 9,
+        "nombre": "Pikachu",
+        "tipo": "eléctrico",
+        "nivel": 7,
+        "salud": 40,
+        "entrenador": {
+            "id": 1,
+            "nombre": "Ash Ketchum"
+        },
+        "habilidades": [
+            {
+                "id": 3,
+                "nombre": "me lo invento"
+            },
+            {
+                "id": 5,
+                "nombre": "hidrobomba"
+            }
+        ]
+    },
+    "saludPokemonA": 34,
+    "pokemonB": {
+        "id": 11,
+        "nombre": "Bulbasaur",
+            "tipo": "planta/veneno",
+            "nivel": 5,
+            "salud": 45,
+            "entrenador": {
+                "id": 1,
+                "nombre": "Ash Ketchum"
+            },
+            "habilidades": [
+                {
+                    "id": 5,
+                    "nombre": "hidrobomba"
+                }
+            ]
+        },
+    "saludPokemonB": 27,
+    "turnoActual": 4,
+    "estado": "EN_CURSO",
+    "fechaInicio": "2025-05-20T16:22:36.119362"
+},
+"atacante": {
+    "id": 11,
+    "nombre": "Bulbasaur",
+    "tipo": "planta/veneno",
+    "nivel": 5,
+    "salud": 45,
+    "entrenador": {
+        "id": 1,
+        "nombre": "Ash Ketchum"
+    },
+    "habilidades": [
+        {
+            "id": 5,
+            "nombre": "hidrobomba"
+        }
+    ]
+},
+"numeroTurno": 4,
+"danoInfligido": 3,
+"saludAtacanteAntes": 27,
+"saludDefensorAntes": 37
+}</code></pre>
+            <h6>
+              Ejemplo de Respuesta (409 Conflict si el combate ha terminado):
+            </h6>
+            <pre><code class="language-json">{
+  "timestamp": "2025-04-27T10:30:00Z",
+  "status": 409,
+  "error": "Conflict",
+  "message": "No se puede ejecutar turno: combate ya finalizado",
+  "path": "/api/v2/combates/1/turno"
+}</code></pre>
+            <h6>
+              Ejemplo de Respuesta (404 Not Found si el combate no existe):
+            </h6>
+            <pre><code class="language-json">{
+  "timestamp": "2025-04-27T10:30:00Z",
+  "status": 404,
+  "error": "Not Found",
+  "message": "Combate no encontrado con id 999",
+  "path": "/api/v2/combates/xyz-456/turno"
+}</code></pre>
+          </div>
+        </div>
+
+        <div class="card mb-3">
+          <div class="card-header">
+            <span class="method-badge method-get">GET</span>
+            <h5 class="d-inline-block">/api/v2/combates/{combateId}</h5>
+          </div>
+          <div class="card-body">
+            <p>Obtiene el estado actual de un combate específico.</p>
+            <h6>Parámetros de Ruta:</h6>
+            <ul>
+              <li><code>combateId</code> (string): ID del combate.</li>
+            </ul>
+            <h6>Ejemplo de Petición:</h6>
+            <pre><code class="language-bash">curl -X GET "http://localhost:8080/api/v2/combates/1"</code></pre>
+            <h6>Ejemplo de Respuesta (200 OK):</h6>
+            <pre><code class="language-json">{
+    "id": 1,
+    "pokemonA": {
+        "id": 9,
+        "nombre": "Pikachu",
+        "tipo": "eléctrico",
+        "nivel": 7,
+        "salud": 40,
+        "entrenador": {
+            "id": 1,
+            "nombre": "Ash Ketchum"
+        },
+        "habilidades": [
+            {
+                "id": 3,
+                "nombre": "me lo invento"
+            },
+            {
+                "id": 5,
+                "nombre": "hidrobomba"
+            }
+        ]
+    },
+    "saludPokemonA": 28,
+    "pokemonB": {
+        "id": 11,
+        "nombre": "Bulbasaur",
+        "tipo": "planta/veneno",
+        "nivel": 5,
+        "salud": 45,
+        "entrenador": {
+            "id": 1,
+            "nombre": "Ash Ketchum"
+        },
+        "habilidades": [
+            {
+                "id": 5,
+                "nombre": "hidrobomba"
+            }
+        ]
+    },
+    "saludPokemonB": 0,
+    "turnoActual": 9,
+    "estado": "FINALIZADO",
+    "fechaInicio": "2025-05-20T16:22:36.119362"
+}</code></pre>
+          </div>
+        </div>
+
+        <div class="card mb-3">
+          <div class="card-header">
+            <span class="method-badge method-get">GET</span>
+            <h5 class="d-inline-block">/api/v2/combates/{id}/turnos</h5>
+          </div>
+          <div class="card-body">
+            <p>
+              Lista todos los turnos registrados para un combate específico.
+            </p>
+            <h6>Parámetros de Ruta:</h6>
+            <ul>
+              <li><code>id</code> (integer): ID del combate.</li>
+            </ul>
+            <h6>Ejemplo de Petición:</h6>
+            <pre><code class="language-bash">curl -X GET "http://localhost:8080/api/v2/combates/1/turnos"</code></pre>
+            <h6>Códigos de Estado:</h6>
+            <ul>
+              <li><code>200 OK</code>: Lista de turnos devuelta.</li>
+              <li><code>404 Not Found</code>: El ID del combate no existe.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="card mb-3">
+          <div class="card-header">
+            <span class="method-badge method-get">GET</span>
+            <h5 class="d-inline-block"></h5>
+              /api/v2/combates/turnos/por-atacante?atacanteId={pokemonId}
+            </h5>
+          </div>
+          <div class="card-body">
+            <p>
+              Recupera todos los turnos en los que el Pokémon con el ID dado
+              actuó como atacante.
+            </p>
+            <h6>Parámetros de Consulta:</h6>
+            <ul>
+              <li>
+                <code>atacanteId</code> (integer, obligatorio): ID del Pokémon
+                atacante.
+              </li>
+            </ul>
+            <h6>Ejemplo de Petición:</h6>
+            <pre><code class="language-bash">curl -X GET "http://localhost:8080/api/v2/combates/turnos/por-atacante?atacanteId=1"</code></pre>
+            <h6>Códigos de Estado:</h6>
+            <ul>
+              <li><code>200 OK</code>: Lista de turnos devuelta.</li>
+              <li><code>400 Bad Request</code>: ID del atacante inválido.</li>
             </ul>
           </div>
         </div>
       </section>
 
-      <!-- Sección: Combates -->
-      <section id="combates" class="mb-5">
-        <h2>5. Combates (API v2)</h2>
-        <div class="card">
-          <div class="card-body">
-            <ul class="list-unstyled mb-0">
-              <li>
-                <code
-                  >POST
-                  /api/v2/combates?playerAId={idA}&amp;playerBId={idB}</code
-                >
-                – Inicia combate bidireccional
-              </li>
-              <li>
-                <code>GET /api/v2/combates/en-curso</code> – Lista combates en
-                curso
-              </li>
-              <li>
-                <code>POST /api/v2/combates/{combateId}/turno</code> – Ejecuta
-                siguiente turno
-              </li>
-              <li>
-                <code>GET /api/v2/combates/{combateId}</code> – Estado actual
-                (saludA, saludB, turnoActual, estado)
-              </li>
-              <li>
-                <code>GET /api/v2/combates/{combateId}/turnos</code> – Histórico
-                de turnos
-              </li>
-              <li>
-                <code
-                  >GET
-                  /api/v2/combates/turnos/por-atacante?atacanteId={pokemonId}</code
-                >
-                – Filtra turnos por atacante
-              </li>
-            </ul>
-          </div>
+      <section id="codigos-estado" class="mb-5">
+        <h2>8. Códigos de Estado HTTP</h2>
+        <p>
+          La API utiliza códigos de estado HTTP estándar para indicar el
+          resultado de una solicitud. Aquí se resumen los más comunes que
+          podrías encontrar:
+        </p>
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th>Código</th>
+              <th>Nombre</th>
+              <th>Descripción</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>200</code></td>
+              <td>OK</td>
+              <td>La solicitud fue exitosa.</td>
+            </tr>
+            <tr>
+              <td><code>201</code></td>
+              <td>Created</td>
+              <td>El recurso ha sido creado exitosamente.</td>
+            </tr>
+            <tr>
+              <td><code>204</code></td>
+              <td>No Content</td>
+              <td>
+                La solicitud fue exitosa, pero no hay contenido que devolver
+                (ej. tras una eliminación).
+              </td>
+            </tr>
+            <tr>
+              <td><code>400</code></td>
+              <td>Bad Request</td>
+              <td>
+                La solicitud no pudo ser procesada debido a un error del cliente
+                (ej. datos inválidos en la petición, recursos relacionados no
+                encontrados, etc.).
+              </td>
+            </tr>
+            <tr>
+              <td><code>404</code></td>
+              <td>Not Found</td>
+              <td>El recurso solicitado no se encontró.</td>
+            </tr>
+            <tr>
+              <td><code>500</code></td>
+              <td>Internal Server Error</td>
+              <td>Un error inesperado ocurrió en el servidor.</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section id="errores" class="mb-5">
+        <h2>9. Manejo de Errores</h2>
+        <p>
+          Cuando ocurre un error, la API devolverá un código de estado HTTP
+          apropiado y un cuerpo de respuesta JSON que proporciona detalles sobre
+          el problema.
+        </p>
+        <h6>Ejemplo de Estructura de Error:</h6>
+        <pre><code class="language-json">{
+  "timestamp": "2025-04-27T10:30:00Z", // Fecha y hora del error
+  "status": 400,                    // Código de estado HTTP
+  "error": "Bad Request",           // Descripción del error HTTP
+  "message": "Mensaje detallado del error, ej. 'Campo 'nombre' es obligatorio.'", // Mensaje específico
+  "path": "/api/v1/entrenadores"    // Ruta de la solicitud que causó el error
+}</code></pre>
+        <div class="alert alert-warning">
+          <strong>Importante:</strong> Siempre revise el campo
+          <code>message</code>
+          para obtener información específica sobre la causa del error.
         </div>
       </section>
     </div>
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/json.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/bash.min.js"></script>
+    <script>
+      hljs.highlightAll(); // Inicializa Highlight.js para resaltar todos los bloques de código
+    </script>
   </body>
 </html>
