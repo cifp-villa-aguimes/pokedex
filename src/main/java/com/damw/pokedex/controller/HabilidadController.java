@@ -36,7 +36,7 @@ public class HabilidadController {
     public ResponseEntity<List<Habilidad>> getAll() {
         log.info("Fetching all habilidades");
         log.debug("GET /api/v1/habilidades");
-        return ResponseEntity.ok(habilidadSvc.getAllHabilidades());
+        return ResponseEntity.ok(habilidadSvc.getAll());
     }
 
     /** GET /api/v1/habilidades/{id} → obtiene una habilidad por ID o 404 */
@@ -44,7 +44,7 @@ public class HabilidadController {
     public ResponseEntity<Habilidad> getById(@PathVariable @Positive Long id) {
         log.info("Fetching habilidad with id: {}", id);
         log.debug("GET /api/v1/habilidades/{}", id);
-        return habilidadSvc.getHabilidadById(id)
+        return habilidadSvc.getById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
@@ -58,7 +58,7 @@ public class HabilidadController {
         log.info("Fetching pokemons for habilidad with id: {}", id);
         log.debug("GET /api/v1/habilidades/{}/pokemons", id);
         // Buscar la habilidad o lanzar 404 si no existe
-        Habilidad h = habilidadSvc.getHabilidadById(id)
+        Habilidad h = habilidadSvc.getById(id)
                 .orElseThrow(() -> new ResponseStatusException(
                         HttpStatus.NOT_FOUND,
                         "Habilidad no encontrada con id " + id));
@@ -73,7 +73,7 @@ public class HabilidadController {
         log.info("Creating new habilidad: {}", h);
         log.debug("POST /api/v1/habilidades");
         log.debug("Request body: {}", h);
-        Habilidad created = habilidadSvc.saveHabilidad(h);
+        Habilidad created = habilidadSvc.save(h);
         return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }
 
@@ -83,9 +83,9 @@ public class HabilidadController {
         log.info("Updating habilidad with id: {}", id);
         log.debug("PUT /api/v1/habilidades/{}", id);
         log.debug("Request body: {}", h);
-        return habilidadSvc.getHabilidadById(id)
+        return habilidadSvc.getById(id)
                 .map(existing -> {
-                    Habilidad updated = habilidadSvc.updateHabilidad(id, h);
+                    Habilidad updated = habilidadSvc.update(id, h);
                     return ResponseEntity.ok(updated);
                 })
                 .orElse(ResponseEntity.notFound().build());
@@ -96,9 +96,9 @@ public class HabilidadController {
     public ResponseEntity<Void> delete(@PathVariable @Positive Long id) {
         log.info("Deleting habilidad with id: {}", id);
         log.debug("DELETE /api/v1/habilidades/{}", id);
-        return habilidadSvc.getHabilidadById(id)
+        return habilidadSvc.getById(id)
                 .map(existing -> {
-                    habilidadSvc.deleteHabilidad(id);
+                    habilidadSvc.deleteById(id);
                     return ResponseEntity.noContent().<Void>build();
                 })
                 .orElse(ResponseEntity.notFound().build());

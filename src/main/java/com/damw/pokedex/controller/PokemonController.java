@@ -37,7 +37,7 @@ public class PokemonController {
     public ResponseEntity<List<Pokemon>> getAll() {
         log.info("Fetching all pokemons");
         log.debug("GET /api/v1/pokemons");
-        return ResponseEntity.ok(pokemonSvc.getAllPokemons());
+        return ResponseEntity.ok(pokemonSvc.getAll());
     }
 
     /** GET /api/v1/pokemons/{id} → obtiene un Pokémon por ID o 404 */
@@ -45,7 +45,7 @@ public class PokemonController {
     public ResponseEntity<Pokemon> getById(@PathVariable @Positive Long id) {
         log.info("Fetching pokemon with id: {}", id);
         log.debug("GET /api/v1/pokemons/{}", id);
-        return pokemonSvc.getPokemonById(id)
+        return pokemonSvc.getById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
@@ -56,7 +56,7 @@ public class PokemonController {
         log.info("Creating new pokemon: {}", p);
         log.debug("POST /api/v1/pokemons");
         log.debug("Request body: {}", p);
-        Pokemon created = pokemonSvc.savePokemon(p);
+        Pokemon created = pokemonSvc.save(p);
         return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }
 
@@ -85,7 +85,7 @@ public class PokemonController {
         log.info("Creating new pokemon with location: {}", p);
         log.debug("POST /api/v1/pokemons/with-location");
         log.debug("Request body: {}", p);
-        Pokemon created = pokemonSvc.savePokemon(p);
+        Pokemon created = pokemonSvc.save(p);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")
                 .buildAndExpand(created.getId())
@@ -99,9 +99,9 @@ public class PokemonController {
         log.info("Updating pokemon with id: {} to {}", id, p);
         log.debug("PUT /api/v1/pokemons/{}", id);
         log.debug("Request body: {}", p);
-        return pokemonSvc.getPokemonById(id)
+        return pokemonSvc.getById(id)
                 .map(existing -> {
-                    Pokemon updated = pokemonSvc.updatePokemon(id, p);
+                    Pokemon updated = pokemonSvc.update(id, p);
                     return ResponseEntity.ok(updated);
                 })
                 .orElse(ResponseEntity.notFound().build());
@@ -112,9 +112,9 @@ public class PokemonController {
     public ResponseEntity<Void> delete(@PathVariable @Positive Long id) {
         log.info("Deleting pokemon with id: {}", id);
         log.debug("DELETE /api/v1/pokemons/{}", id);
-        return pokemonSvc.getPokemonById(id)
+        return pokemonSvc.getById(id)
                 .map(existing -> {
-                    pokemonSvc.deletePokemon(id);
+                    pokemonSvc.deleteById(id);
                     return ResponseEntity.noContent().<Void>build();
                 })
                 .orElse(ResponseEntity.notFound().build());

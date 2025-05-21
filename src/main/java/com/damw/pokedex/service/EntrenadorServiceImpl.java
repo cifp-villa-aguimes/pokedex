@@ -6,48 +6,39 @@ import com.damw.pokedex.repository.EntrenadorRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.Optional;
-
 @Service
 @Transactional
 /**
  * Implementación del servicio de Entrenador.
  * Proporciona métodos para gestionar entrenadores en la base de datos.
  */
-public class EntrenadorServiceImpl implements EntrenadorService {
-    private final EntrenadorRepository entrenadorRepo;
-
-    public EntrenadorServiceImpl(EntrenadorRepository entrenadorRepo) {
-        this.entrenadorRepo = entrenadorRepo;
+public class EntrenadorServiceImpl extends AbstractCrudService<Entrenador, Long>
+        implements EntrenadorService {
+    /**
+     * Constructor que inicializa el repositorio de entrenadores.
+     *
+     * @param repo el repositorio de entrenadores
+     */
+    public EntrenadorServiceImpl(EntrenadorRepository repo) {
+        super(repo);
     }
 
-    @Transactional(readOnly = true)
+    /**
+     * Actualiza completamente un Entrenador.
+     * Al gestionar la colección de pokemons, se asegura que Hibernate aplique
+     * correctamente
+     * la eliminación de huérfanos (orphanRemoval). Si la colección 'pokemons' no se
+     * incluye
+     * en la actualización, Hibernate eliminará los pokemons que ya no estén
+     * asociados al entrenador.
+     */
     @Override
-    public List<Entrenador> getAllEntrenadores() {
-        return entrenadorRepo.findAll();
+    @Transactional
+    public Entrenador update(Long id, Entrenador ent) {
+        if (!repo.existsById(id)) {
+            throw new IllegalArgumentException("Entrenador con ID " + id + " no existe.");
+        }
+        ent.setId(id);
+        return repo.save(ent);
     }
-
-    @Transactional(readOnly = true)
-    @Override
-    public Optional<Entrenador> getEntrenadorById(Long id) {
-        return entrenadorRepo.findById(id);
-    }
-
-    @Override
-    public Entrenador saveEntrenador(Entrenador e) {
-        return entrenadorRepo.save(e);
-    }
-
-    @Override
-    public Entrenador updateEntrenador(Long id, Entrenador e) {
-        e.setId(id);
-        return entrenadorRepo.save(e);
-    }
-
-    @Override
-    public void deleteEntrenador(Long id) {
-        entrenadorRepo.deleteById(id);
-    }
-
 }

@@ -35,7 +35,7 @@ public class EntrenadorController {
     public ResponseEntity<List<Entrenador>> getAll() {
         log.info("Fetching all entrenadores");
         log.debug("GET /api/v1/entrenadores");
-        return ResponseEntity.ok(entrenadorSvc.getAllEntrenadores());
+        return ResponseEntity.ok(entrenadorSvc.getAll());
     }
 
     /** GET /api/v1/entrenadores/{id} → obtiene un entrenador por ID o 404 */
@@ -43,7 +43,7 @@ public class EntrenadorController {
     public ResponseEntity<Entrenador> getById(@PathVariable @Positive Long id) {
         log.info("Fetching entrenador with id: {}", id);
         log.debug("GET /api/v1/entrenadores/{}", id);
-        return entrenadorSvc.getEntrenadorById(id)
+        return entrenadorSvc.getById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
@@ -56,7 +56,7 @@ public class EntrenadorController {
     public ResponseEntity<List<Pokemon>> getPokemons(@PathVariable @Positive Long id) {
         log.info("Fetching pokemons for entrenador with id: {}", id);
         log.debug("GET /api/v1/entrenadores/{}/pokemons", id);
-        Entrenador e = entrenadorSvc.getEntrenadorById(id)
+        Entrenador e = entrenadorSvc.getById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
                         "Entrenador no encontrado con id " + id));
         // Devolver la lista de Pokémon asociados
@@ -70,7 +70,7 @@ public class EntrenadorController {
         log.info("Creating new entrenador: {}", e);
         log.debug("POST /api/v1/entrenadores");
         log.debug("Request body: {}", e);
-        Entrenador created = entrenadorSvc.saveEntrenador(e);
+        Entrenador created = entrenadorSvc.save(e);
         return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }
 
@@ -81,9 +81,9 @@ public class EntrenadorController {
         log.info("Updating entrenador with id: {}", id);
         log.debug("PUT /api/v1/entrenadores/{}", id);
         log.debug("Request body: {}", e);
-        return entrenadorSvc.getEntrenadorById(id)
+        return entrenadorSvc.getById(id)
                 .map(existing -> {
-                    Entrenador updated = entrenadorSvc.updateEntrenador(id, e);
+                    Entrenador updated = entrenadorSvc.update(id, e);
                     return ResponseEntity.ok(updated);
                 })
                 .orElse(ResponseEntity.notFound().build());
@@ -100,11 +100,11 @@ public class EntrenadorController {
         log.info("Safely updating entrenador name, preserving pokemons, id: {}", id);
         log.debug("PUT /api/v1/entrenadores/{}/preserve", id);
         log.debug("Request body: {}", e);
-        return entrenadorSvc.getEntrenadorById(id)
+        return entrenadorSvc.getById(id)
                 .map(existing -> {
                     // Solo actualizamos el nombre; no tocamos getPokemons()
                     existing.setNombre(e.getNombre());
-                    Entrenador updated = entrenadorSvc.saveEntrenador(existing);
+                    Entrenador updated = entrenadorSvc.save(existing);
                     return ResponseEntity.ok(updated);
                 })
                 .orElse(ResponseEntity.notFound().build());
@@ -115,9 +115,9 @@ public class EntrenadorController {
     public ResponseEntity<Void> delete(@PathVariable @Positive Long id) {
         log.info("Deleting entrenador with id: {}", id);
         log.debug("DELETE /api/v1/entrenadores/{}", id);
-        return entrenadorSvc.getEntrenadorById(id)
+        return entrenadorSvc.getById(id)
                 .map(existing -> {
-                    entrenadorSvc.deleteEntrenador(id);
+                    entrenadorSvc.deleteById(id);
                     return ResponseEntity.noContent().<Void>build();
                 })
                 .orElse(ResponseEntity.notFound().build());
